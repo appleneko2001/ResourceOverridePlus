@@ -20,7 +20,7 @@ Resource Override is an extension to help you gain full control of any website b
 
 ## How to use it on your browser
 ### Chrome, Chromium (include ungoogled chromium or uses same ui as chrome)
-1. Open [Chrome extension manager page](chrome://extensions)
+1. Open Chrome extension manager page (chrome://extensions)
 2. Enable developer mode to allow to install extension not from chrome store
 3. Download this repository and extract files to a folder
 4. Press "Load extracted extension" and choose folder which we extracted files to it

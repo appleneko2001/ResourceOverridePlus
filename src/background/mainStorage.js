@@ -76,12 +76,12 @@
         const rulesKey = "rules";
 
         const setRulesetInternal = function (rules, resolve){
-            bgapp.debug.verbose(`syncing changes to storage...`)
+            bgapp.debug.verbose(() => `syncing changes to storage...`)
             chrome.storage.sync.set({rules}, resolve);
         }
 
         const onFailInternal = function (actionName, reason, reject){
-            bgapp.debug.logError(`Failed to ${actionName}: ${reason}`);
+            bgapp.debug.logError(() => `Failed to ${actionName}: ${reason}`);
             reject(reason);
         }
 
@@ -98,8 +98,8 @@
 
                 // if result is not null or empty object
 
-                if(result !== {}){
-                    bgapp.debug.verbose(`result is ${result}, accessing object...`)
+                if(Object.keys(result).length !== 0){
+                    bgapp.debug.verbose(() => `result is ${result}, accessing object...`)
                     arr = result.rules;
                 }
 
@@ -111,12 +111,12 @@
             return new Promise(function (resolve, reject){
                 getDomainsInternal(function (rules){
                     let isReplaced = rules.ifCondition(o => o.id === domainData.id, i => {
-                        bgapp.debug.verbose(`replacing rule at index ${i}... (${rules[i].id})`);
+                        bgapp.debug.verbose(() => `replacing rule at index ${i}... (${rules[i].id})`);
                         rules.splice(i, 1, domainData);
                     });
 
                     if(!isReplaced){
-                        bgapp.debug.verbose(`adding rule ${domainData.id} to ruleset`)
+                        bgapp.debug.verbose(() => `adding rule ${domainData.id} to ruleset`)
                         rules.push(domainData);
                     }
 
@@ -135,7 +135,7 @@
             return new Promise(function (resolve, reject) {
                 getDomainsInternal(function (rules){
                     if(rules.ifCondition(o => o.id === id, i => {
-                        bgapp.debug.verbose(`deleting rule at index ${i}... (${rules[i].id})`)
+                        bgapp.debug.verbose(() => `deleting rule at index ${i}... (${rules[i].id})`)
                         rules.splice(i, 1)
                     })){
                         setRulesetInternal(rules, resolve);

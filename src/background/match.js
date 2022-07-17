@@ -103,6 +103,47 @@ function matchReplace(pattern, replacePattern, str) {
     return replacePattern;
 }
 
+function matchRegex(fullPattern, str){
+    let regexPattern = fullPattern;
+
+    let firstSlashIndex = -1;
+    let lastSlashIndex = -1;
+
+    // Find start slash and store index if found
+    if(regexPattern.startsWith("/"))
+        firstSlashIndex = 1;
+
+    // Find last slash from end and store index if found
+    for (let i = regexPattern.length - 1; i >= 0; i--) {
+        if(regexPattern[i] === '/')
+        {
+            lastSlashIndex = i;
+            break;
+        }
+    }
+
+    // if no start slash and (or) last slash index, then log to console and return false.
+    if(firstSlashIndex === -1 || lastSlashIndex === -1 || firstSlashIndex === lastSlashIndex){
+        bgapp.debug.logError(`Regular expression pattern ${regexPattern} is invalid. `
+            +"Start and end slash is needed.");
+        return false;
+    }
+
+    // get pattern and flags by slicing full pattern
+    let pattern = regexPattern.slice(firstSlashIndex, lastSlashIndex);
+    let flags = "";
+    if(lastSlashIndex + 1 < regexPattern.length)
+        flags = regexPattern.slice(lastSlashIndex + 1);
+
+    // create regular expression instance
+    let regex = new RegExp(pattern, flags);
+
+    // compare url by regex and return result
+    let result = regex.test(str);
+    bgapp.debug.verbose(() => `Compare ${str} with regex "${pattern}", flags "${flags}", result: ${result}`);
+    return result;
+}
+
 if (typeof module === "object" && module.exports) {
     module.exports = matchReplace;
 }

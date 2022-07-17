@@ -107,43 +107,7 @@
                 }
                 // regex pattern match
                 else{
-                    let regexPattern = request.domainUrl;
-
-                    let firstSlashIndex = -1;
-                    let lastSlashIndex = -1;
-
-                    // Find start slash and store index if found
-                    if(regexPattern.startsWith("/"))
-                        firstSlashIndex = 1;
-
-                    // Find last slash from end and store index if found
-                    for (let i = regexPattern.length - 1; i >= 0; i--) {
-                        if(regexPattern[i] === '/')
-                        {
-                            lastSlashIndex = i;
-                            break;
-                        }
-                    }
-
-                    // if no start slash and (or) last slash index, then log to console and return false.
-                    if(firstSlashIndex === -1 || lastSlashIndex === -1 || firstSlashIndex === lastSlashIndex){
-                        bgapp.debug.logError(`Regular expression pattern ${regexPattern} is invalid. `
-                            +"Start and end slash is needed.");
-                        sendResponse(false);
-                        return;
-                    }
-
-                    // get pattern and flags by slicing full pattern
-                    let pattern = regexPattern.slice(firstSlashIndex, lastSlashIndex);
-                    let flags = "";
-                    if(lastSlashIndex + 1 < regexPattern.length)
-                        flags = regexPattern.slice(lastSlashIndex + 1);
-
-                    // create regular expression instance
-                    let regex = new RegExp(pattern, flags);
-
-                    // compare url by regex and return result
-                    sendResponse(regex.test(request.windowUrl));
+                    sendResponse(matchRegex(request.domainUrl, request.windowUrl));
                 }
                 break;
 

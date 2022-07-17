@@ -6,6 +6,7 @@
     --input-foreground: black;
 
     --dropdown-background: #222;
+    --popup-background: #222;
 }
 
 * {
@@ -66,7 +67,7 @@ div, span {
     display: none;
     width: 180px;
     padding: 6px;
-    background: #EEEEEE;
+    background: var(--popup-background);
     position: absolute;
     top: 0px;
     z-index: 50;

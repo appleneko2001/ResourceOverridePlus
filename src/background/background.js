@@ -114,6 +114,10 @@
             case "extractMimeType":
                 sendResponse(bgapp.extractMimeType(request.fileName, request.file));
                 break;
+
+            case "verbose":
+                bgapp.debug.verbose(request.arguments);
+                break;
         }
 
         // !!!Important!!! Need to return true for sendResponse to work.

@@ -5,6 +5,10 @@
         js: "script",
         css: "style"
     };
+
+    const verbose = function (arg){
+        chrome.runtime.sendMessage({action: "verbose", arguments: arg}, () => {});
+    }
 	
 	chrome.runtime.onMessage.addListener(function(msg) {
         if (msg.action === 'log') {
@@ -25,7 +29,7 @@
         if(node.tagName !== "SCRIPT")
             return;
 
-        bgapp.debug.verbose(`[ResourceOverridePlus] Detected add node to document: ${node}`);
+        verbose(() => `[ResourceOverridePlus] Detected add node to document: ${node}`);
 
         if (node.src !== rule.match)
             return;

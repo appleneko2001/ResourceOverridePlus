@@ -93,6 +93,7 @@
 
         return {
             id: domain[0].id,
+            isMatchRegex: domain.find("#isMatchRegexCheckbox").prop("checked"),
             matchUrl: domain.find(".domainMatchInput").val(),
             rules: rules,
             on: domain.find(".onoffswitch")[0].isOn
@@ -102,6 +103,7 @@
     function createDomainMarkup(savedData) {
         savedData = savedData || {};
         const domain = util.instanceTemplate(ui.domainTemplate);
+        const isMatchRegexCbx = domain.find("#isMatchRegexCheckbox");
         const overrideRulesContainer = domain.find(".overrideRules");
         const addRuleBtn = domain.find(".addRuleBtn");
         const domainMatchInput = domain.find(".domainMatchInput");
@@ -131,7 +133,8 @@
         mvRules.onMove(saveFunc);
 
         domainMatchInput.val(savedData.matchUrl || "");
-        onOffBtn[0].isOn = savedData.on === false ? false : true;
+        onOffBtn[0].isOn = savedData.on !== false;
+        isMatchRegexCbx.prop("checked", savedData.isMatchRegex);
 
         if (savedData.on === false) {
             domain.addClass("disabled");
@@ -141,6 +144,8 @@
             mvRules.assignHandleListener(markup.find(".handle")[0]);
             overrideRulesContainer.append(markup);
         };
+
+        isMatchRegexCbx.on("change", saveFunc);
 
         addRuleBtn.on("click", function() {
             showRuleDropdown(addRuleBtn, addRuleCallback, saveFunc);

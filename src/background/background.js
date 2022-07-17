@@ -37,53 +37,119 @@
     };
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.action === "saveDomain") {
-            bgapp.mainStorage.put(request.data)
-                .then(syncAllInstances)
-                .catch(simpleError);
-            bgapp.ruleDomains[request.data.id] = request.data;
-        } else if (request.action === "getDomains") {
-            bgapp.mainStorage.getAll().then(function(domains) {
-                sendResponse(domains || []);
-            }).catch(simpleError);
-        } else if (request.action === "deleteDomain") {
-            bgapp.mainStorage.delete(request.id)
-                .then(syncAllInstances)
-                .catch(simpleError);
-            delete bgapp.ruleDomains[request.id];
-        } else if (request.action === "import") {
-            let maxId = 0;
-            for (const id in bgapp.ruleDomains) {
-                maxId = Math.max(maxId, parseInt(id.substring(1)));
-            }
-            maxId++;
-            Promise.all(request.data.map(function(domainData) {
-                // dont overwrite any pre-existing domains.
-                domainData.id = "d" + maxId++;
-                bgapp.ruleDomains[domainData.id] = domainData;
-                return bgapp.mainStorage.put(domainData);
-            }))
-            .then(syncAllInstances)
-            .catch(simpleError);
-        } else if (request.action === "makeGetRequest") {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", request.url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    sendResponse(xhr.responseText);
+
+        bgapp.debug.verbose(`Receive internal process command: ${request.action}`)
+
+        switch (request.action) {
+            case "saveDomain":
+                bgapp.mainStorage.put(request.data)
+                    .then(syncAllInstances)
+                    .catch(simpleError);
+                bgapp.ruleDomains[request.data.id] = request.data;
+                break;
+
+            case "getDomains":
+                bgapp.mainStorage.getAll().then(function (domains) {
+                    sendResponse(domains || []);
+                }).catch(simpleError);
+                break;
+
+            case "deleteDomain":
+                bgapp.mainStorage.delete(request.id)
+                    .then(syncAllInstances)
+                    .catch(simpleError);
+                delete bgapp.ruleDomains[request.id];
+                break;
+
+            case "import":
+                let maxId = 0;
+                for (const id in bgapp.ruleDomains) {
+                    maxId = Math.max(maxId, parseInt(id.substring(1)));
                 }
-            };
-            xhr.send();
-        } else if (request.action === "setSetting") {
-            localStorage[request.setting] = request.value;
-        } else if (request.action === "getSetting") {
-            sendResponse(localStorage[request.setting]);
-        } else if (request.action === "syncMe") {
-            bgapp.syncFunctions.push(sendResponse);
-        } else if (request.action === "match") {
-            sendResponse(match(request.domainUrl, request.windowUrl).matched);
-        } else if (request.action === "extractMimeType") {
-            sendResponse(bgapp.extractMimeType(request.fileName, request.file));
+                maxId++;
+                Promise.all(request.data.map(function (domainData) {
+                    // dont overwrite any pre-existing domains.
+                    domainData.id = "d" + maxId++;
+                    bgapp.ruleDomains[domainData.id] = domainData;
+                    return bgapp.mainStorage.put(domainData);
+                }))
+                    .then(syncAllInstances)
+                    .catch(simpleError);
+                break;
+
+            case "makeGetRequest":
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", request.url, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        sendResponse(xhr.responseText);
+                    }
+                };
+                xhr.send();
+                break;
+
+            case "setSetting":
+                localStorage[request.setting] = request.value;
+                break;
+
+            case "getSetting":
+                sendResponse(localStorage[request.setting]);
+                break;
+
+            case "syncMe":
+                bgapp.syncFunctions.push(sendResponse);
+                break;
+
+            case "match":
+                // standard pattern match
+                if(!request.useRegex){
+                    sendResponse(match(request.domainUrl, request.windowUrl).matched);
+                }
+                // regex pattern match
+                else{
+                    let regexPattern = request.domainUrl;
+
+                    let firstSlashIndex = -1;
+                    let lastSlashIndex = -1;
+
+                    // Find start slash and store index if found
+                    if(regexPattern.startsWith("/"))
+                        firstSlashIndex = 1;
+
+                    // Find last slash from end and store index if found
+                    for (let i = regexPattern.length - 1; i >= 0; i--) {
+                        if(regexPattern[i] === '/')
+                        {
+                            lastSlashIndex = i;
+                            break;
+                        }
+                    }
+
+                    // if no start slash and (or) last slash index, then log to console and return false.
+                    if(firstSlashIndex === -1 || lastSlashIndex === -1 || firstSlashIndex === lastSlashIndex){
+                        bgapp.debug.logError(`Regular expression pattern ${regexPattern} is invalid. `
+                            +"Start and end slash is needed.");
+                        sendResponse(false);
+                        return;
+                    }
+
+                    // get pattern and flags by slicing full pattern
+                    let pattern = regexPattern.slice(firstSlashIndex, lastSlashIndex);
+                    let flags = "";
+                    if(lastSlashIndex + 1 < regexPattern.length)
+                        flags = regexPattern.slice(lastSlashIndex + 1);
+
+                    // create regular expression instance
+                    let regex = new RegExp(pattern, flags);
+
+                    // compare url by regex and return result
+                    sendResponse(regex.test(request.windowUrl));
+                }
+                break;
+
+            case "extractMimeType":
+                sendResponse(bgapp.extractMimeType(request.fileName, request.file));
+                break;
         }
 
         // !!!Important!!! Need to return true for sendResponse to work.
@@ -140,4 +206,5 @@
         }
     }).catch(simpleError);
 
+	bgapp.debug.log("Background is initialized.");
 }

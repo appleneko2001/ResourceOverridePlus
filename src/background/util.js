@@ -20,4 +20,18 @@
         }
         console.error(err);
     };
+
+    Array.prototype.ifCondition = function (condition, onMatch){
+        let result = false;
+
+        for (let i = 0; i < this.length; i++) {
+            if(condition(this[i]))
+            {
+                result = true;
+                onMatch(i);
+            }
+        }
+
+        return result;
+    }
 }

@@ -38,7 +38,7 @@
 
         const verbose = function (msg){
             if(verboseEnabled)
-                logInternal (msg, LEVEL_INFO);
+                logInternal (msg(), LEVEL_INFO);
         }
 
         const enableVerbose = function (v){
@@ -60,7 +60,10 @@
         }
 
         return {
+            /// Switch verbose message invoke. Argument: boolean value
             enableVerbose: enableVerbose,
+
+            /// Output verbose message to console if possible. Argument: function to string
             verbose: verbose,
             log: log,
             logWarn: logWarn,
@@ -69,5 +72,7 @@
     }
 
     bgapp.debug = (DebuggerClass)();
+
+    /// Switch verbose message invoke. Argument: boolean value
     bgapp.enableVerbose = bgapp.debug.enableVerbose;
 }

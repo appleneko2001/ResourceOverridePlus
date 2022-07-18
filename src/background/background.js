@@ -38,7 +38,8 @@
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
-        bgapp.debug.verbose(() => `Receive internal process command: ${request.action}`)
+        if(request.action !== "verbose")
+            bgapp.debug.verbose(() => `Receive internal process command: ${request.action}`)
 
         switch (request.action) {
             case "saveDomain":

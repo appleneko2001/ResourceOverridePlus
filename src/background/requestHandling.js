@@ -28,6 +28,74 @@
         };
     };
 
+    function handleRequestV2Core(tabUrl, requestUrl){
+        for(const [rulesetId, ruleset] of Object.entries(bgapp.ruleDomains)){
+            if(!ruleset.on)
+                continue;
+
+            if(!ruleset.isMatchRegex)
+            {
+                bgapp.debug.logError("Alter match system is not ready in newer Request Handler. Skipping...");
+                continue;
+            }
+
+            if(!matchRegex(ruleset.matchUrl, tabUrl))
+                continue;
+
+            for(const rule of ruleset.rules){
+                if(!rule.on)
+                    continue;
+
+                switch (rule.type){
+                    case "normalOverride":{
+                        switch (rule.isMatchRegex){
+                            case true:
+                                if(!matchRegex(rule.match, requestUrl))
+                                    continue;
+                                break;
+
+                            default:
+                                if(rule.match !== requestUrl)
+                                    continue;
+                                break;
+                        }
+
+
+                        bgapp.debug.log(`Redirecting requested url from ${requestUrl} to ${rule.replace}.`)
+                        return {redirectUrl: rule.replace};
+                    }
+                }
+            }
+        }
+
+        bgapp.debug.verbose(`No ruleset for handle this request url: ${requestUrl}`);
+        return;
+    }
+
+    /// Newer request handler.
+    bgapp.handleRequestV2 = function (tabId, initiator, request){
+        return new Promise(async function (resolve, reject){
+            const requestUrl = request.url;
+
+            if(tabId >= 0){
+                const tabUrl = await new Promise((resolve, reject) =>
+                    chrome.tabs.get (tabId, obj => resolve(obj.url)));
+
+                resolve(handleRequestV2Core(tabUrl, requestUrl));
+            }
+            else
+            {
+                if(initiator === undefined || initiator === null)
+                {
+                    bgapp.debug.logWarn(`Unable to validate where this request came from: ${request}. Skipping.`);
+                    return;
+                }
+
+                resolve(handleRequestV2Core(initiator, requestUrl));
+            }
+        })
+    }
+
     bgapp.handleRequest = function(requestUrl, tabUrl, tabId, requestId) {
         for (const key in bgapp.ruleDomains) {
             const domainObj = bgapp.ruleDomains[key];

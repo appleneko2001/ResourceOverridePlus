@@ -36,49 +36,150 @@
         bgapp.syncFunctions = [];
     };
 
+    function PostIpcProcedure(isSuccess, obj){
+        if(!(isSuccess === true || isSuccess === false))
+            throw "isSuccess property is undefined or had wrong value.";
+
+        if(obj === null || obj === undefined)
+            throw "obj shouldn't be empty.";
+
+        obj.isSuccess = isSuccess;
+
+        return obj;
+    }
+
+    const ExperimentIPCProcedure = function (req, sender, resp){
+        if (req.action === undefined)
+            return false;
+
+        try{
+            switch (req.action){
+                case IPCRequestAction.GetProperty:
+                case IPCRequestAction.GetPropertyAsBool:
+                case IPCRequestAction.GetPropertyAsInteger:{
+                    const value = localStorage[req.prop];
+                    let result;
+
+                    switch (req.action){
+                        case IPCRequestAction.GetProperty:
+                            result = value;
+                            break;
+
+                        case IPCRequestAction.GetPropertyAsBool:
+                            result = value === 'true';
+                            break;
+
+                        case IPCRequestAction.GetPropertyAsInteger:
+                            result = parseInt(value);
+                            break;
+                    }
+
+                    resp(PostIpcProcedure(true, { value: result }));
+                }break;
+
+                case IPCRequestAction.SetProperty:{
+                    localStorage[req.prop] = req.value;
+
+                    resp(PostIpcProcedure(true, {}));
+                }break;
+
+                case IPCRequestAction.IsRegexMatch:{
+                    const result = matchRegex(req.pattern, req.str);
+
+                    resp(PostIpcProcedure(true, { any: result }));
+                }break;
+
+                case IPCRequestAction.GetRegexMatches:{
+                    const result = execRegex(req.pattern, req.str);
+
+                    if(result === false || result === undefined || result === null){
+                        resp(PostIpcProcedure(false, {}));
+                        break;
+                    }
+
+                    resp(PostIpcProcedure(true, { any: result.length !== 0, ranges: result }));
+                }
+            }
+
+            return true;
+        }
+        catch (e){
+            bgapp.debug.logError(`Unable to handle IPC request: ${req.action}. Error message: ${e}`);
+            resp(PostIpcProcedure(false, {}));
+            return false;
+        }
+    };
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+        // declare EXPERIMENT_FEATURE_IPC_PROC in request object and set it true
+        // or nonzero value to use newer procedure to process request
+        if(request.EXPERIMENT_FEATURE_IPC_PROC){
+            bgapp.debug.log("Use newer IPC controller to handle request...");
+            ExperimentIPCProcedure(request, sender, sendResponse);
+            return true;
+        }
 
         if(request.action !== "verbose")
             bgapp.debug.verbose(() => `Receive internal process command: ${request.action}`)
 
         switch (request.action) {
-            case "saveDomain":
+            case "saveDomain": {
                 bgapp.mainStorage.put(request.data)
-                    .then(syncAllInstances)
-                    .catch(simpleError);
+                    //.then(syncAllInstances)
+                    .then(_ => sendResponse(true))
+                    .catch(e => {
+                        simpleError(e);
+                        sendResponse(false);
+                    });
                 bgapp.ruleDomains[request.data.id] = request.data;
-                break;
+            }break;
 
-            case "getDomains":
+            case "saveDomains": {
+                let promises = [];
+                for(const data of request.domains)
+                {
+                    promises.push(bgapp.mainStorage.put(data));
+                }
+
+                Promise.all(promises)
+                    .then(_ => sendResponse(true))
+                    //.then(syncAllInstances)
+                    .catch(e => {
+                        simpleError(e);
+                        sendResponse(false);
+                    });
+            }break;
+
+            case "getDomains": {
                 bgapp.mainStorage.getAll().then(function (domains) {
                     sendResponse(domains || []);
                 }).catch(simpleError);
-                break;
+            }break;
 
-            case "deleteDomain":
+            case "deleteDomain": {
                 bgapp.mainStorage.delete(request.id)
-                    .then(syncAllInstances)
+                    //.then(syncAllInstances)
                     .catch(simpleError);
                 delete bgapp.ruleDomains[request.id];
-                break;
+            }break;
 
-            case "import":
+            case "import": {
                 let maxId = 0;
                 for (const id in bgapp.ruleDomains) {
                     maxId = Math.max(maxId, parseInt(id.substring(1)));
                 }
                 maxId++;
                 Promise.all(request.data.map(function (domainData) {
-                    // dont overwrite any pre-existing domains.
+                    // don't overwrite any pre-existing domains.
                     domainData.id = "d" + maxId++;
                     bgapp.ruleDomains[domainData.id] = domainData;
                     return bgapp.mainStorage.put(domainData);
                 }))
-                    .then(syncAllInstances)
+                    //.then(syncAllInstances)
                     .catch(simpleError);
-                break;
+            }break;
 
-            case "makeGetRequest":
+            case "makeGetRequest": {
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", request.url, true);
                 xhr.onreadystatechange = function () {
@@ -87,21 +188,26 @@
                     }
                 };
                 xhr.send();
-                break;
+            }break;
 
-            case "setSetting":
+            case "setSetting": {
                 localStorage[request.setting] = request.value;
-                break;
+                sendResponse();
+            }break;
 
-            case "getSetting":
+            case "getSetting": {
                 sendResponse(localStorage[request.setting]);
-                break;
+            }break;
 
-            case "syncMe":
+            case "getBoolSetting": {
+                sendResponse(localStorage[request.setting] === 'true');
+            }break;
+
+            case "syncMe": {
                 bgapp.syncFunctions.push(sendResponse);
-                break;
+            }break;
 
-            case "match":
+            case "match": {
                 // standard pattern match
                 if(!request.useRegex){
                     sendResponse(match(request.domainUrl, request.windowUrl).matched);
@@ -110,15 +216,27 @@
                 else{
                     sendResponse(matchRegex(request.domainUrl, request.windowUrl));
                 }
-                break;
+            }break;
+
+            // Get regular expression match results (start index and end index array)
+            case "regexGetRange": {
+                const result = execRegex(request.pattern, request.string);
+                if (!result){
+                    sendResponse({result: null, isSuccess: false});
+                }
+                else{
+                    sendResponse({result: result, isSuccess: true});
+                }
+            }break;
 
             case "extractMimeType":
                 sendResponse(bgapp.extractMimeType(request.fileName, request.file));
                 break;
 
-            case "verbose":
+            case "verbose":{
                 bgapp.debug.verbose(request.arguments);
-                break;
+                sendResponse(true);
+            }break;
         }
 
         // !!!Important!!! Need to return true for sendResponse to work.
@@ -126,26 +244,13 @@
     });
 
     chrome.webRequest.onBeforeRequest.addListener(function(details) {
-        if (!bgapp.requestIdTracker.has(details.requestId)) {
-            if (details.tabId > -1) {
-                let tabUrl = bgapp.tabUrlTracker.getUrlFromId(details.tabId);
-                if (details.type === "main_frame") {
-                    // a new tab must have just been created.
-                    tabUrl = details.url;
-                }
-                if (tabUrl) {
-                    const result = bgapp.handleRequest(details.url, tabUrl, details.tabId, details.requestId);
-                    if (result) {
-                        // make sure we don't try to redirect again.
-                        bgapp.requestIdTracker.push(details.requestId);
-                    }
-                    return result;
-                }
-            }
-        }
-    }, {
-        urls: ["<all_urls>"]
-    }, ["blocking"]);
+        // Do nothing if no tab source and no initiator. Might need a global ruleset in the future.
+        // TODO: Global ruleset
+        if(details.tabId < 0 && details.initiator === undefined)
+            return {};
+
+        return bgapp.handleRequestV2(details.tabId, details.initiator, details);
+    }, { urls: ["<all_urls>"] }, ["blocking"]);
 
     chrome.webRequest.onHeadersReceived.addListener(bgapp.makeHeaderHandler("response"), {
         urls: ["<all_urls>"]
@@ -167,13 +272,25 @@
     }
 
     // init domain storage
-    bgapp.mainStorage.getAll().then(function(domains) {
-        if (domains) {
+    bgapp.mainStorage.getAll()
+        .then(function(domains) {
+            if(!domains)
+                return;
+
+            let loadedDomainsCount = 0;
+
             domains.forEach(function(domainObj) {
                 bgapp.ruleDomains[domainObj.id] = domainObj;
+                loadedDomainsCount++;
             });
-        }
-    }).catch(simpleError);
 
-	bgapp.debug.log("Background is initialized.");
+            bgapp.debug.log(`Loaded and cached ${loadedDomainsCount} domain ruleset.`);
+        })
+        .catch(function (e){
+            bgapp.debug.logError("Unable to access extension storage.");
+            simpleError(e);
+        })
+        .finally(function (){
+            bgapp.debug.log("Background is initialized.");
+        });
 }

@@ -7,19 +7,19 @@
         let verboseEnabled = false;
 
         const logInternal = function (msg, level){
-            const header = "[ResourceOverridePlus] ";
+            const message = `[ResourceOverridePlus] ${msg}`;
 
             switch (level){
                 case LEVEL_INFO:
-                    console.log(header + msg);
+                    console.log(message);
                     break;
 
                 case LEVEL_WARN:
-                    console.warn(header + msg);
+                    console.warn(message);
                     break;
 
                 case LEVEL_ERROR:
-                    console.error(header + msg);
+                    console.error(message);
                     break;
             }
         }
@@ -37,8 +37,20 @@
         }
 
         const verbose = function (msg){
+            if (msg === undefined)
+                return;
+
             if(verboseEnabled)
+            {
+                let typ = typeof msg;
+
+                if (typ === "string"){
+                    logInternal (msg, LEVEL_INFO);
+                    return;
+                }
+
                 logInternal (msg(), LEVEL_INFO);
+            }
         }
 
         const enableVerbose = function (v){

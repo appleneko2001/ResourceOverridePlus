@@ -103,37 +103,51 @@ function matchReplace(pattern, replacePattern, str) {
     return replacePattern;
 }
 
-function matchRegex(fullPattern, str){
-    let regexPattern = fullPattern;
-
+// This procedure used for extract regex pattern and flags
+// It won't return "null" or "undefined" or any similar null values
+// but, instead it always returns "isSuccess" property to know the procedure is completed or not.
+function extractRegexStringProcedure(regexPattern) {
     let firstSlashIndex = -1;
     let lastSlashIndex = -1;
 
     // Find start slash and store index if found
-    if(regexPattern.startsWith("/"))
+    if (regexPattern.startsWith("/"))
         firstSlashIndex = 1;
 
     // Find last slash from end and store index if found
     for (let i = regexPattern.length - 1; i >= 0; i--) {
-        if(regexPattern[i] === '/')
-        {
+        if (regexPattern[i] === '/') {
             lastSlashIndex = i;
             break;
         }
     }
 
     // if no start slash and (or) last slash index, then log to console and return false.
-    if(firstSlashIndex === -1 || lastSlashIndex === -1 || firstSlashIndex === lastSlashIndex){
-        bgapp.debug.logError(`Regular expression pattern ${regexPattern} is invalid. `
-            +"Start and end slash is needed.");
-        return false;
+    if (firstSlashIndex === -1 || lastSlashIndex === -1 || firstSlashIndex === lastSlashIndex) {
+        const msg = `Regular expression pattern ${regexPattern} is invalid. `
+            + "Start and end slash is needed.";
+        return {isSuccess: false, message: msg};
     }
 
     // get pattern and flags by slicing full pattern
     let pattern = regexPattern.slice(firstSlashIndex, lastSlashIndex);
     let flags = "";
-    if(lastSlashIndex + 1 < regexPattern.length)
+    if (lastSlashIndex + 1 < regexPattern.length)
         flags = regexPattern.slice(lastSlashIndex + 1);
+
+    return {isSuccess: true, pattern, flags};
+}
+
+function matchRegex(fullPattern, str){
+    const extractResult = extractRegexStringProcedure(fullPattern);
+
+    if(!extractResult.isSuccess)
+    {
+        bgapp.debug.logError(extractResult.message);
+        return false;
+    }
+
+    let {pattern, flags} = extractResult;
 
     // create regular expression instance
     let regex = new RegExp(pattern, flags);
@@ -141,6 +155,36 @@ function matchRegex(fullPattern, str){
     // compare url by regex and return result
     let result = regex.test(str);
     bgapp.debug.verbose(() => `Compare ${str} with regex "${pattern}", flags "${flags}", result: ${result}`);
+    return result;
+}
+
+function execRegex(fullPattern, str){
+    const extractResult = extractRegexStringProcedure(fullPattern);
+
+    if(!extractResult.isSuccess)
+    {
+        bgapp.debug.logError(extractResult.message);
+        return false;
+    }
+
+    let {pattern, flags} = extractResult;
+
+    // create regular expression instance
+    let regex = new RegExp(pattern, flags);
+
+    let result = [];
+
+    // execute regex test and get match ranges (start index and end index array)
+    let match;
+    while (match = regex.exec(str)){
+        result.push({
+            a: match.index,
+            b: match.index + match.length,
+            l: match.length
+        })
+    }
+
+    bgapp.debug.verbose(() => `Found ${result.length} results. Regex pattern: "${pattern}", flags "${flags}"`);
     return result;
 }
 

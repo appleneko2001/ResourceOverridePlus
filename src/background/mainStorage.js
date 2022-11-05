@@ -87,23 +87,21 @@
 
         const getDomainsInternal = function (resolve, reject){
             chrome.storage.sync.get(rulesKey, function (result){
-                let lastError = chrome.runtime.lastError;
+                try{
+                    let arr = [];
 
-                if(lastError){
-                    onFailInternal("retrieve ruleset", lastError, reject);
-                    return;
+                    // if result is not null or empty object
+
+                    if(Object.keys(result).length !== 0){
+                        bgapp.debug.verbose(() => `result is ${result}, accessing object...`)
+                        arr = result.rules;
+                    }
+
+                    resolve(arr)
                 }
-
-                let arr = [];
-
-                // if result is not null or empty object
-
-                if(Object.keys(result).length !== 0){
-                    bgapp.debug.verbose(() => `result is ${result}, accessing object...`)
-                    arr = result.rules;
+                catch (e) {
+                    reject(e);
                 }
-
-                resolve(arr)
             });
         }
 

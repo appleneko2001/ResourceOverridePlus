@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Main UI Templates</title>
+
+        <script type="text/html" id="ui-domains-placeholder">
+            <div>No domains in list.</div>
+            <div>Please press "add a domain" to create one</div>
+        </script>
+
+        <script type="text/html" id="ui-toast-message-template">
+            <div class="ui-toast-message" data-bind="text: text"></div>
+        </script>
+
+        <script type="text/html" id="ui-side-tab-template">
+            <a href="#"
+               class="ui-side-tab ui-button"
+               data-bind="click: $root.changeTabCommand, css: { 'ui-selected-tab': tab == $root.selectedTab() }">
+                <div class="ui-icons-32"
+                     data-bind="class: icon">
+                    <span class="ui-button-text" data-bind="text: text"></span>
+                </div>
+            </a>
+        </script>
+
+        <script type="text/html" id="ui-delete-button-template">
+            <button class="ui-text-button ui-icons-24 icons-delete-forever ui-v-center"
+                    title="Delete item"
+                    data-bind="css: { 'ui-invisible': hideDeleteButton() }, click: requestDelete, clickBubble: false">
+            </button>
+            <div data-bind="css: { 'ui-invisible': isConfirming() == false }">
+                <span>Confirm delete? No turn back way !</span>
+                <button data-bind="click: performDeletion, clickBubble: false">Yes</button>
+                <button data-bind="click: giveUp, clickBubble: false">No</button>
+            </div>
+        </script>
+
+        <script type="text/html" id="ui-match-url-input-template">
+
+        </script>
+
+        <!-- Main rule container -->
+        <script type="text/html" id="domain-rule-item-template">
+            <div class="ui-outline ui-rule-container">
+                <div class="ui-flexbox">
+                    <!--div class="ui-icons-32 icons-drag-handle"></div-->
+                    <span class="ui-v-center" data-bind="text: ruleKind"></span>
+
+                    <div class="ui-flex-fill ui-v-center">
+                        <label>
+                            <input type="checkbox" data-bind="checked: isRuleEnabled">
+                            <span class="ui-v-center">Enable rule</span>
+                        </label>
+                    </div>
+
+                    <div class="ui-v-center"
+                         style="padding-top: 3px; height: 32px"
+                         data-bind="template: { name: 'ui-delete-button-template', data: deletion, if: deletion != undefined }">
+                    </div>
+                </div>
+                <div class="ui-spacing-half"></div>
+                <div data-bind="template: { name: $root.getRuleTemplateKey }"></div>
+            </div>
+        </script>
+
+        <script type="text/html" id="domain-rule-content-unknown-template">
+            <span>Error: Unknown rule kind: </span>
+            <span data-bind="text: kind"></span>
+        </script>
+
+        <script type="text/html" id="domain-rule-content-normal-override-template">
+            <div class="ui-flexbox">
+                <label>
+                    <input type="checkbox" data-bind="checked: isMatchRegex">
+                    <span class="ui-v-center">Use regular expression to match</span>
+                </label>
+            </div>
+            <div class="ui-flexbox">
+                <span class="ui-v-center ui-icons-32 icons-find-replace"></span>
+
+                <label class="ui-flexbox ui-flex-fill">
+                    <input class="ui-flex-fill" type="text" data-bind="value: match">
+                </label>
+
+                <span class="ui-v-center ui-icons-32 icons-arrow-right"></span>
+
+                <label class="ui-flexbox ui-flex-fill">
+                    <input class="ui-flex-fill" type="text" data-bind="value: replace">
+                </label>
+            </div>
+        </script>
+
+        <script type="text/html" id="domain-rule-content-html-attrib-override-preload-template">
+            <div class="ui-flexbox">
+                <label title="Uncheck this, if this node is not under <head> tree but in <body> tree.">
+                    <input type="checkbox" data-bind="checked: inHeadSection">
+                    <span class="ui-v-center">In HTML.Head tree?</span>
+                </label>
+            </div>
+            <div class="ui-flexbox">
+                <label class="ui-flexbox ui-flex-fill"
+                title="WARNING: CASE SENSITIVE. PLEASE KEEP EVERY SYMBOL IN UPPERCASE.">
+                    <span class="ui-v-center">TAG NAME</span>
+                    <input class="ui-flex-fill" type="text" data-bind="value: tagName">
+                </label>
+
+                <label class="ui-flexbox ui-flex-fill"
+                title="Warning: Case sensitive.">
+                    <span class="ui-v-center">Attribute</span>
+                    <input class="ui-flex-fill" type="text" data-bind="value: attribName">
+                </label>
+            </div>
+
+            <div class="ui-flexbox">
+                <label>
+                    <input type="checkbox" data-bind="checked: isMatchRegex">
+                    <span class="ui-v-center">Use regular expression to match</span>
+                </label>
+            </div>
+
+            <div class="ui-flexbox">
+                <span class="ui-v-center ui-icons-32 icons-find-replace"></span>
+
+                <label class="ui-flexbox ui-flex-fill">
+                    <input class="ui-flex-fill" type="text" data-bind="value: match">
+                </label>
+
+                <span class="ui-v-center ui-icons-32 icons-arrow-right"></span>
+
+                <label class="ui-flexbox ui-flex-fill">
+                    <input class="ui-flex-fill" type="text" data-bind="value: replace">
+                </label>
+            </div>
+        </script>
+
+
+
+        <!-- Ruleset expander -->
+        <script type="text/html" id="domain-ruleset-template">
+            <expander class="ui-expander ui-outline"
+                      data-bind="css: { ui-is-expanded: isExpanded() }">
+                <div class="ui-expander-header"
+                     data-bind="click: switchExpandedCommand">
+                    <div class="ui-header-content ui-flexbox">
+                        <span class="ui-text-align-left" data-bind="visible: isDirty">Unsaved</span>
+                        <span class="ui-flex-fill ui-text-align-center" data-bind="text: name"></span>
+                    </div>
+
+                    <div class="ui-v-center"
+                         style="padding-top: 3px;"
+                         data-bind="template: { name: 'ui-delete-button-template', data: deletion, if: deletion != undefined }">
+
+                    </div>
+
+                    <button class="ui-expander-expand-button ui-text-button ui-icons-32 icons-expand"
+                            title="Expand / shrink details and settings">
+                    </button>
+                </div>
+                <div class="ui-expander-content">
+                    <div class="ui-text-align-left">
+                        <div class="ui-content-subtitle-subsection">Options</div>
+
+                        <label class="ui-flexbox">
+                            <span class="ui-v-center">Name</span>
+                            <input class="ui-flex-fill" type="text" data-bind="value: name">
+                        </label>
+
+                        <label class="ui-flexbox">
+                            <input type="checkbox" data-bind="checked: isRulesetEnabled">
+                            <span class="ui-v-center">Enable domain ruleset</span>
+                        </label>
+
+                        <label class="ui-flexbox">
+                            <input type="checkbox" data-bind="checked: isMatchRegex">
+                            <span class="ui-v-center">Use regular expression</span>
+                        </label>
+
+                        <label class="ui-flexbox">
+                            <span class="ui-v-center">Match Url</span>
+                            <input class="ui-flex-fill" type="text" data-bind="value: matchUrl">
+                        </label>
+
+                        <div class="ui-content-subtitle-subsection">Rules</div>
+
+                        <div class="ui-rules-listing"
+                             data-bind="template: { name: 'domain-rule-item-template',
+                                 foreach: rules, visible: rules().length > 0 }">
+                        </div>
+
+                        <div class="ui-items-placeholder"
+                             data-bind="visible: rules().length == 0">
+                            <div>No rules in list.</div>
+                            <div>Please press "add rule" to create one</div>
+                        </div>
+
+                        <div class="ui-spacing"></div>
+
+                        <label class="ui-flexbox">
+                            <span class="ui-v-center">Rule kind</span>
+                            <select class="ui-flex-fill" data-bind="options: $root.supportedRules, optionsText: 'name', value: ruleCreationKind"></select>
+                        </label>
+
+                        <a href="#" class="ui-rule-create ui-items-create ui-button"
+                           data-bind="click: addNewRule">
+                            <div>
+                                <div>Add rule</div>
+                            </div>
+                        </a>
+                        <div data-bind="visible: isDirty">
+                            <div class="ui-content-subtitle"></div>
+                            <div class="ui-flexbox">
+                                <a href="#" class="ui-button-outline"
+                                   data-bind="click: revertChangesCommand">
+                                    <div>Revert changes</div>
+                                </a>
+
+                                <a href="#" class="ui-button-outline"
+                                   data-bind="click: saveChangesCommand">
+                                    <div>Save changes</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </expander>
+        </script>
+    </head>
+</html>

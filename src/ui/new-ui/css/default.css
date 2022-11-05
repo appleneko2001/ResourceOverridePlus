@@ -1,0 +1,18 @@
+input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+}
+
+label.ui-component {
+    display: flex;
+    height: 26px;
+    margin: 4px 0;
+}
+
+label.ui-component > * {
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+}
+
+

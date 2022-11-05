@@ -1,0 +1,82 @@
+.icons-home {
+    --icon-url: url("../resources/icons/home-48x48.svg");
+}
+
+.icons-rule-folder {
+    --icon-url: url("../resources/icons/rule-folder-48x48.svg");
+}
+
+.icons-tune {
+    --icon-url: url("../resources/icons/tune-48x48.svg");
+}
+
+.icons-help {
+    --icon-url: url("../resources/icons/help-48x48.svg");
+}
+
+.icons-drag-handle{
+    --icon-url: url("../resources/icons/drag-handle-48x48.svg");
+}
+
+.icons-delete-forever{
+    --icon-url: url("../resources/icons/delete-forever-48x48.svg");
+}
+
+.icons-expand{
+    --icon-url: url("../resources/icons/expand-48x48.svg");
+}
+
+.icons-arrow-right{
+    --icon-url: url("../resources/icons/arrow-right-alt-48x48.svg");
+}
+
+.icons-find-replace{
+    --icon-url: url("../resources/icons/find-replace-48x48.svg");
+}
+
+.icons-place-item{
+    --icon-url: url("../resources/icons/place-item-48x48.svg");
+}
+
+.icons-edit-document{
+    --icon-url: url("../resources/icons/edit-document-48x48.svg");
+}
+
+.ui-icons-24{
+    --icon-size: 24px;
+}
+
+.ui-icons-32{
+    --icon-size: 32px;
+}
+
+.ui-icons-48{
+    --icon-size: 48px;
+}
+
+.ui-icons-64{
+    --icon-size: 64px;
+}
+
+[class^='ui-icons-'], [class*=' ui-icons-'] {
+    max-width: var( --icon-size);
+    max-height: var( --icon-size);
+}
+
+[class^='ui-icons-']:before, [class*=' ui-icons-']:before {
+    background-color: var(--foreground);
+    -webkit-mask: var(--icon-url) no-repeat;
+    mask-image: var(--icon-url);
+    mask-repeat: no-repeat;
+    content: '';
+    display: block;
+
+    width: var( --icon-size);
+    height: var( --icon-size);
+
+    -webkit-mask-size: var( --icon-size);
+    mask-size: var( --icon-size);
+}
+
+
+

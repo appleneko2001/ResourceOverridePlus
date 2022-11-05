@@ -1,0 +1,141 @@
+/*
+  Name:       material
+  Author:     Mattia Astorino (http://github.com/equinusocio)
+  Website:    https://material-theme.site/
+*/
+
+.CodeMirror {
+  background-color: #0F111A;
+  color: #8F93A2;
+}
+
+ .CodeMirror-gutters {
+  background: #0F111A;
+  color: #464B5D;
+  border: none;
+}
+
+ .CodeMirror-guttermarker,
+ .CodeMirror-guttermarker-subtle,
+ .CodeMirror-linenumber {
+  color: #464B5D;
+}
+
+ .CodeMirror-cursor {
+  border-left: 1px solid #FFCC00;
+}
+.cm-fat-cursor .CodeMirror-cursor {
+  background-color: #a2a8a175 !important;
+}
+ .cm-animate-fat-cursor {
+  background-color: #a2a8a175 !important;
+}
+
+ div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+ .CodeMirror-line::selection,
+ .CodeMirror-line>span::selection,
+ .CodeMirror-line>span>span::selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+ .CodeMirror-line::-moz-selection,
+ .CodeMirror-line>span::-moz-selection,
+ .CodeMirror-line>span>span::-moz-selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+ .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+ .cm-keyword {
+  color: #C792EA;
+}
+
+ .cm-operator {
+  color: #89DDFF;
+}
+
+ .cm-variable-2 {
+  color: #EEFFFF;
+}
+
+ .cm-variable-3,
+ .cm-type {
+  color: #f07178;
+}
+
+ .cm-builtin {
+  color: #FFCB6B;
+}
+
+ .cm-atom {
+  color: #F78C6C;
+}
+
+ .cm-number {
+  color: #FF5370;
+}
+
+ .cm-def {
+  color: #82AAFF;
+}
+
+ .cm-string {
+  color: #C3E88D;
+}
+
+ .cm-string-2 {
+  color: #f07178;
+}
+
+ .cm-comment {
+  color: #464B5D;
+}
+
+ .cm-variable {
+  color: #f07178;
+}
+
+ .cm-tag {
+  color: #FF5370;
+}
+
+ .cm-meta {
+  color: #FFCB6B;
+}
+
+ .cm-attribute {
+  color: #C792EA;
+}
+
+ .cm-property {
+  color: #C792EA;
+}
+
+ .cm-qualifier {
+  color: #DECB6B;
+}
+
+ .cm-variable-3,
+ .cm-type {
+  color: #DECB6B;
+}
+
+
+ .cm-error {
+  color: rgba(255, 255, 255, 1.0);
+  background-color: #FF5370;
+}
+
+ .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}

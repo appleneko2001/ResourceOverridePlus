@@ -1,0 +1,357 @@
+/* Basic style settings */
+
+html {
+    overflow-x: auto;
+    overflow-y: scroll;
+    min-width: 800px;
+    min-height: 600px;
+}
+
+body{
+    background: var(--background);
+    color: var(--foreground);
+    font-size: 16px;
+}
+
+button {
+    color: var(--foreground);
+}
+
+li {
+    margin: 16px 0;
+}
+
+a:not(:active){
+    color: var(--link-color);
+}
+
+a.ui-link-block{
+    display: inline;
+}
+
+/* Main layout */
+
+.ui-toast-overlay{
+    margin-top: 16px;
+    margin-left: 16px;
+    margin-right: 16px;
+
+    position: fixed;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ui-toast-overlay > .ui-toast-message{
+    border-radius: 4px;
+    background-color: var(--popup-background);
+    color: var(--popup-foreground);
+    align-self: flex-start;
+    padding: 8px;
+}
+
+div#ui-layout-main{
+    /*display: grid;*/
+    display: flex;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.ui-content-group {
+    margin-bottom: 24px;
+}
+
+div.ui-content-group-warn{
+    background: var(--warning-background);
+    border: 1px solid orangered;
+    border-radius: 8px;
+    color: var(--warning-foreground);
+    margin-bottom: 24px;
+    padding: 4px 16px 16px;
+}
+
+.ui-invisible{
+    display: none;
+}
+
+div.ui-content-title{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-size: 32px;
+}
+
+div.ui-content-subtitle{
+    margin-top: 8px;
+    margin-bottom: 16px;
+    text-align: left;
+    font-size: 24px;
+
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--foreground);
+    width: auto;
+}
+
+div.ui-content-subtitle-subsection{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: left;
+    font-size: 16px;
+
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--foreground);
+    width: auto;
+}
+
+div.ui-separator {
+    width: auto;
+    height: 1px;
+    background: var(--foreground);
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+div.ui-spacing {
+    margin: 24px 0;
+    content: "";
+}
+
+div.ui-spacing-half{
+    margin: 12px 0;
+    content: "";
+}
+
+div.ui-items-placeholder{
+    text-align: center;
+}
+
+/* create item container */
+
+div.ui-items-create {
+    border-style: dashed;
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: var(--foreground);
+    padding: 8px;
+}
+
+/* create item button */
+
+a.ui-items-create{
+    text-decoration: none;
+    -webkit-user-drag: none;
+}
+
+a.ui-items-create > div{
+    border-radius: 8px;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: var(--foreground);
+    padding: 24px 8px;
+    text-align: center;
+}
+
+a.ui-items-create:hover > div{
+    background: var(--hovered);
+}
+
+/* outlined fragment */
+
+.ui-outline{
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--foreground);
+}
+
+/* button (link) */
+
+a.ui-button {
+    color: var(--foreground);
+    text-decoration: none;
+    -webkit-user-drag: none;
+}
+
+a.ui-button:hover > div.ui-outline{
+    background: var(--hovered);
+}
+
+/* button (link) */
+
+a.ui-button-outline {
+    color: var(--foreground);
+    text-decoration: none;
+    text-align: center;
+    -webkit-user-drag: none;
+}
+
+a.ui-button-outline > div {
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--foreground);
+    padding: 16px;
+}
+
+a.ui-button-outline:hover > div{
+    background: var(--hovered);
+}
+
+/* expander */
+
+.ui-expander{
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    margin-top: 16px;
+}
+
+.ui-expander-header{
+    display: flex;
+    column-gap: 16px;
+    height: 48px;
+}
+
+.ui-expander-header > *{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.ui-expander-header > .ui-header-content {
+    flex-grow: 1;
+    padding: 8px 16px;
+}
+
+.ui-expander-header > .ui-expander-expand-button {
+    margin-right: 8px;
+    flex-grow: 0;
+}
+
+.ui-expander > .ui-expander-header > .ui-expander-expand-button:before{
+    transform: rotate(0deg);
+}
+
+.ui-expander:not(.ui-is-expanded) > .ui-expander-content{
+    height: 0;
+    opacity: 0;
+    display: none;
+}
+
+/* expander (expanded state) */
+
+.ui-expander.ui-is-expanded{
+    width: 100%;
+}
+
+.ui-expander.ui-is-expanded > .ui-expander-content{
+    border-top-width: 1px;
+    border-top-color: var(--foreground);
+    border-top-style: solid;
+}
+
+.ui-expander.ui-is-expanded > .ui-expander-content:not(.ui-expander-content-no-padding){
+    padding: 12px 16px 16px;
+}
+
+.ui-expander.ui-is-expanded > .ui-expander-header > .ui-expander-expand-button:before{
+    transform: rotate(180deg);
+}
+
+/* input -- button */
+
+button.ui-text-button{
+    background: 0;
+    border: 0;
+    padding: 0;
+}
+
+/* other controls / styles for some special elements */
+
+.ui-text-align-left {
+    text-align: left;
+}
+
+.ui-text-align-center {
+    text-align: center;
+}
+
+.ui-flexbox {
+    display: flex;
+    gap: 8px;
+}
+
+.ui-flexbox > .ui-flex-fill {
+    flex-grow: 1;
+}
+
+.ui-v-center{
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+/* Native controls style overriding */
+
+label {
+    margin: 4px 0;
+}
+
+button {
+    background-color: var(--background);
+    border-width: 1px;
+    border-color: var(--foreground);
+    border-radius: 4px;
+    border-style: solid;
+    margin: 0 0 2px;
+    padding: 2px 8px;
+}
+
+select{
+    border: 1px solid;
+    border-color: var(--foreground);
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 4px;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select{
+    background-image: url("../resources/icons/expand-48x48.svg");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 24px 24px;
+}
+
+input[type="text"]{
+    background: var(--input-background);
+    border: 1px solid;
+    border-color: var(--foreground);
+    border-radius: 4px;
+    color: var(--input-foreground);
+    font-size: 16px;
+    padding: 4px;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+input[type="text"][disabled]{
+    border-color: var(--input-disabled);
+    color: var(--input-disabled);
+}
+
+input[type="checkbox"]{
+    width: 16px;
+    height: 16px;
+}
+
+/* CodeMirror 5 */
+
+.ui-text-edit-wrapper, .CodeMirror-wrap {
+    width: 100%;
+}

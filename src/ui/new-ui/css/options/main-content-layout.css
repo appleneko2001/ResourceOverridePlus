@@ -1,0 +1,27 @@
+#ui-main-content-root{
+    flex-grow: 1;
+    justify-content: center;
+}
+
+div#ui-main-content{
+
+}
+
+div#ui-tab-content {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+div#ui-domains-listing{
+    display: grid;
+    gap: 16px;
+}
+
+div.ui-rules-listing{
+    display: grid;
+    gap: 8px;
+}
+
+div.ui-rule-container{
+    padding: 8px;
+}

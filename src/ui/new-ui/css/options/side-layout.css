@@ -1,0 +1,135 @@
+/* sidebar layout */
+
+div#ui-side-drawer-root{
+    width: 300px;
+    flex-shrink: 0;
+}
+
+div#ui-side-drawer{
+    top: 0;
+    bottom: 0;
+    position: fixed;
+
+    display: grid;
+
+    min-height: 480px;
+    max-height: 1000px;
+}
+
+.ui-narrow-view{
+    max-width: 80px;
+}
+
+/* sidebar header layout */
+
+div#ui-side-header{
+    margin-top: 16px;
+}
+
+div#ui-side-header::before{
+    background-image: url(../../resources/icons/icon-minified-48x48.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: " ";
+    width: 80px;
+    height: 80px;
+    display: block;
+    float: left;
+}
+
+div#ui-side-header-title{
+    font-size: 36px;
+    font-style: italic;
+}
+
+div#ui-side-header-title > p{
+    color: #007182;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+div#ui-side-header-title > p:first-child{
+    margin-left: 96px;
+}
+
+/* sidebar tabs layout */
+
+div#ui-side-tabs{
+    margin-left: auto;
+    width: 240px;
+}
+
+/*
+div#ui-tabs-container{
+    border: 1px solid white;
+    border-radius: 8px 0 0 8px;
+    border-right-width: 0;
+}
+*/
+
+div#ui-tabs-container{
+    display: grid;
+    margin: 8px;
+    row-gap: 8px;
+}
+
+a.ui-side-tab {
+    min-width: 48px;
+}
+
+a.ui-side-tab > div {
+    border-radius: 8px;
+    border: solid transparent 0;
+    display: flex;
+    font-size: 32px;
+    height: 48px;
+}
+
+a.ui-side-tab > div > .ui-icons-32 {
+    margin: 8px;
+}
+
+a.ui-side-tab:not(.ui-selected-tab):hover > div {
+    background: var(--hovered);
+}
+
+a.ui-selected-tab > div {
+    background: var(--selected);
+}
+
+/* sidebar footer layout */
+
+div#ui-side-footer {
+    font-size: 14px;
+    position: relative;
+}
+
+div.ui-side-align-bottom{
+    bottom: 4px;
+    position: absolute;
+    text-align: end;
+    right: 4px;
+}
+
+div#ui-side-drawer-root.ui-narrow-view div#ui-side-header-title{
+    display: none;
+}
+
+div#ui-side-drawer-root.ui-narrow-view div#ui-side-header::before{
+    background-image: url(../../resources/icons/icon-minified-48x48.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    content: " ";
+    width: 64px;
+    height: 64px;
+    display: block;
+    float: left;
+}
+
+div#ui-side-drawer-root.ui-narrow-view div#ui-side-tabs{
+    max-width: 64px;
+}
+
+div#ui-side-drawer-root.ui-narrow-view div#ui-side-tabs a.ui-side-tab span.ui-button-text{
+    display: none;
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- In this template contains parts for combined UI parts -->
+    <!-- or more easily understanding explains: some simple UI parts like customized button, placeholders or etc. -->
+
+    <meta charset="UTF-8">
+    <title>UI Parts template</title>
+
+    <script type="text/html" id="ui-embedded-text-editor">
+        <!-- Requires custom knockoutJs handler for this -->
+        <expander class="ui-expander ui-outline"
+                  css="width: 100%;"
+                  data-bind="css: { ui-is-expanded: isExpanded() }">
+            <div class="ui-expander-header"
+                 data-bind="click: switchExpandedCommand">
+                <div class="ui-header-content ui-flexbox">
+                    <span class="ui-text-align-left ui-icons-24 icons-edit-document ui-v-center"></span>
+                    <span class="ui-flex-fill ui-text-align-center">Code editor</span>
+                </div>
+
+                <button class="ui-expander-expand-button ui-text-button ui-icons-32 icons-expand"
+                        title="Expand / shrink editor">
+                </button>
+            </div>
+            <div class="ui-expander-content ui-expander-content-no-padding">
+                <div class="ui-text-align-left">
+                    <form class="ui-flexbox ui-flex-fill">
+                        <div class="ui-text-edit-wrapper" data-bind="codemirror: { lineNumbers: true,
+            text: inlineHtml, lineWrapping: true, theme: 'custom-theme', isActive: isExpanded }">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </expander>
+    </script>
+
+    <!-- Third-party library information container -->
+    <script type="text/html" id="ui-third-party-lib-info">
+        <li>
+            <a class="ui-link-block" data-bind="text: name, attr: { href: url }"></a>
+            <i data-bind="text: desc"></i>
+            <div data-bind="visible: version !== undefined">
+                <span>Version: </span>
+                <span data-bind="text: version"></span>
+            </div>
+        </li>
+    </script>
+
+    <!-- Empty domain list placeholder -->
+    <script type="text/html" id="ui-domains-placeholder">
+        <div>No domains in list.</div>
+        <div>Please press "add a domain" to create one</div>
+    </script>
+
+    <!-- Empty domain rules list placeholder -->
+    <script type="text/html" id="ui-domain-rules-placeholder">
+        <div>No rules in list.</div>
+        <div>Please press "add rule" to create one</div>
+    </script>
+
+    <!-- Is in HTML.Head tree checkbox -->
+    <script type="text/html" id="ui-is-in-html-head-checkbox">
+        <label title="Uncheck this, if this node is not under <head> tree but in <body> tree.">
+            <input type="checkbox" data-bind="checked: inHeadSection">
+            <span class="ui-v-center">Is in HTML.Head tree?</span>
+        </label>
+    </script>
+
+    <!-- Should Match URL by Regular Expressions? -->
+    <script type="text/html" id="ui-is-match-regex-checkbox">
+        <label>
+            <input type="checkbox" data-bind="checked: isMatchRegex">
+            <span class="ui-v-center">Use regular expression to match</span>
+        </label>
+    </script>
+
+    <!-- Toast message (used for notification) -->
+    <script type="text/html" id="ui-toast-message-template">
+        <div class="ui-toast-message" data-bind="text: text"></div>
+    </script>
+
+    <!-- Navigation button (side-button) -->
+    <script type="text/html" id="ui-side-tab-template">
+        <a href="#"
+           class="ui-side-tab ui-button"
+           data-bind="click: $root.changeTabCommand, css: { 'ui-selected-tab': tab == $root.selectedTab() }">
+            <div>
+                <span class="ui-icons-32"
+                     data-bind="class: icon">
+                </span>
+                <span class="ui-button-text" data-bind="text: text"></span>
+            </div>
+        </a>
+    </script>
+
+    <!-- Universal delete button template -->
+    <script type="text/html" id="ui-delete-button-template">
+        <button class="ui-text-button ui-icons-24 icons-delete-forever ui-v-center"
+                title="Delete item"
+                data-bind="css: { 'ui-invisible': hideDeleteButton() }, click: requestDelete, clickBubble: false">
+        </button>
+        <div data-bind="css: { 'ui-invisible': isConfirming() == false }">
+            <span>Confirm delete? No turn back way !</span>
+            <button data-bind="click: performDeletion, clickBubble: false">Yes</button>
+            <button data-bind="click: giveUp, clickBubble: false">No</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="ui-match-url-input-template">
+
+    </script>
+
+    <!-- Attribute setter template -->
+    <script type="text/html" id="ui-attrib-setter-template">
+        <div class="ui-flexbox">
+            <label class="ui-flexbox ui-flex-fill"
+                   title="Warning: Case sensitive.">
+                <span class="ui-v-center">Attribute name</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: key">
+            </label>
+
+            <label class="ui-flexbox ui-flex-fill"
+                   title="Warning: Case sensitive.">
+                <span class="ui-v-center">Attribute value</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: value">
+            </label>
+        </div>
+    </script>
+</head>
+</html>

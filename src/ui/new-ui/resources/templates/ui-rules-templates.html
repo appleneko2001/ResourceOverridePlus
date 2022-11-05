@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI Rules template</title>
+
+    <!-- Base rule template -->
+    <script type="text/html" id="domain-rule-item-template">
+        <div class="ui-outline ui-rule-container">
+            <div class="ui-flexbox">
+                <!-- TODO: Support reposition by cursor dragging handle -->
+                <!--div class="ui-icons-32 icons-drag-handle"></div-->
+                <span class="ui-v-center" data-bind="text: ruleKind"></span>
+
+                <!-- Enable rule checkbox -->
+                <div class="ui-flex-fill ui-v-center">
+                    <label>
+                        <input type="checkbox" data-bind="checked: isRuleEnabled">
+                        <span class="ui-v-center">Enable rule</span>
+                    </label>
+                </div>
+
+                <!-- Delete rule button (need import part-templates.html) -->
+                <div class="ui-v-center"
+                     style="padding-top: 3px; height: 32px"
+                     data-bind="template: { name: 'ui-delete-button-template', data: deletion, if: deletion != undefined }">
+                </div>
+            </div>
+            <!-- Separator line -->
+            <div class="ui-spacing-half"></div>
+
+            <!-- Apply template by rule kind -->
+            <div data-bind="template: { name: $root.getRuleTemplateKey }"></div>
+        </div>
+    </script>
+
+    <!-- Unknown rule kind template -->
+    <script type="text/html" id="domain-rule-content-unknown-template">
+        <span>Error: Unknown rule kind: </span>
+        <span data-bind="text: kind"></span>
+    </script>
+
+    <!-- Override resource by hijacking WebRequest rule kind template -->
+    <script type="text/html" id="domain-rule-content-normal-override-template">
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-is-match-regex-checkbox' }">
+        </div>
+
+        <div class="ui-flexbox">
+            <span class="ui-v-center ui-icons-32 icons-find-replace"></span>
+
+            <label class="ui-flexbox ui-flex-fill">
+                <input class="ui-flex-fill" type="text" data-bind="value: match">
+            </label>
+
+            <span class="ui-v-center ui-icons-32 icons-arrow-right"></span>
+
+            <label class="ui-flexbox ui-flex-fill">
+                <input class="ui-flex-fill" type="text" data-bind="value: replace">
+            </label>
+        </div>
+    </script>
+
+    <!-- Replace DOM single attribute on load rule kind template -->
+    <script type="text/html" id="domain-rule-content-html-attrib-override-preload-template">
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-is-in-html-head-checkbox' }">
+        </div>
+
+        <div class="ui-flexbox">
+            <label class="ui-flexbox ui-flex-fill"
+                   title="WARNING: CASE SENSITIVE. PLEASE KEEP EVERY SYMBOL IN UPPERCASE.">
+                <span class="ui-v-center">TAG NAME</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: tagName">
+            </label>
+
+            <label class="ui-flexbox ui-flex-fill"
+                   title="Warning: Case sensitive.">
+                <span class="ui-v-center">Attribute</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: attribName">
+            </label>
+        </div>
+
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-is-match-regex-checkbox' }">
+        </div>
+
+        <div class="ui-flexbox">
+            <span class="ui-v-center ui-icons-32 icons-find-replace"></span>
+
+            <label class="ui-flexbox ui-flex-fill">
+                <input class="ui-flex-fill" type="text" data-bind="value: match">
+            </label>
+
+            <span class="ui-v-center ui-icons-32 icons-arrow-right"></span>
+
+            <label class="ui-flexbox ui-flex-fill">
+                <input class="ui-flex-fill" type="text" data-bind="value: replace">
+            </label>
+        </div>
+    </script>
+
+    <!-- Inject File by URL rule kind template -->
+    <script type="text/html" id="inject-file-url-template">
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-is-in-html-head-checkbox' }">
+        </div>
+
+        <div class="ui-flexbox">
+            <label class="ui-flexbox ui-flex-fill"
+                   title="WARNING: CASE SENSITIVE. PLEASE KEEP EVERY SYMBOL IN UPPERCASE.">
+                <span class="ui-v-center">TAG NAME</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: tagName">
+            </label>
+        </div>
+
+        <div class="ui-attrib-listing"
+             data-bind="template: { name: 'ui-attrib-setter-template',
+                                 foreach: attribs, visible: attribs().length > 0 }">
+        </div>
+
+        <a href="#" class="ui-items-create ui-button"
+           data-bind="click: addKeyValuePair">
+            <div>
+                <div>Add a attribute setter</div>
+            </div>
+        </a>
+
+        <div class="ui-flexbox">
+            <span class="ui-v-center ui-icons-32 icons-place-item"></span>
+
+            <label class="ui-flexbox ui-flex-fill"
+                   title="Warning: Case sensitive.">
+                <span class="ui-v-center">Attribute</span>
+                <input class="ui-flex-fill" type="text" data-bind="value: attribName">
+            </label>
+
+            <label class="ui-flexbox ui-flex-fill">
+                <input class="ui-flex-fill" type="text" data-bind="value: value">
+            </label>
+        </div>
+    </script>
+
+    <!-- Inject DOM Inline rule kind template -->
+    <script type="text/html" id="inject-dom-inline-template">
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-is-in-html-head-checkbox' }">
+        </div>
+
+        <label class="ui-flexbox">
+            <span class="ui-v-center">Inject position</span>
+            <select class="ui-flex-fill"
+                    data-bind="options: $root.supportedInsertHtmlPositionList,
+                                        optionsText: 'name',
+                                        optionsValue: 'id',
+                                        value: position"></select>
+        </label>
+
+        <div class="ui-flexbox" data-bind="template: { name: 'ui-embedded-text-editor' }">
+        </div>
+    </script>
+</head>
+</html>

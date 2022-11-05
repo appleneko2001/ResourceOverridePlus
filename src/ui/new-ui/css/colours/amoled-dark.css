@@ -1,0 +1,20 @@
+:root, * {
+    --background: #000;
+    --foreground: rgba(255,255,255, 75%);
+
+    --hovered: rgba(255,255,255,12%);
+    --selected: rgba(255,255,255,24%);
+
+    --input-background: transparent;
+    --input-foreground: rgba(255,255,255, 75%);
+    --input-disabled: rgba(255,255,255, 25%);
+
+    --dropdown-background: #222;
+    --popup-background: #AAA;
+    --popup-foreground: black;
+
+    --warning-background: rgba(255,69,0,50%);
+    --warning-foreground: rgba(255,180,153,100%);
+
+    --link-color: #50A2E5;
+}

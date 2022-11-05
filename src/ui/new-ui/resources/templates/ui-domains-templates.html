@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI Domain list template</title>
+
+    <!-- Domain ruleset expander -->
+    <script type="text/html" id="domain-ruleset-template">
+        <expander class="ui-expander ui-outline"
+                  data-bind="css: { ui-is-expanded: isExpanded() }">
+            <div class="ui-expander-header"
+                 data-bind="click: switchExpandedCommand">
+                <div class="ui-header-content ui-flexbox">
+                    <span class="ui-text-align-left" data-bind="visible: isDirty">Unsaved</span>
+                    <span class="ui-flex-fill ui-text-align-center" data-bind="text: name"></span>
+                </div>
+
+                <div class="ui-v-center"
+                     style="padding-top: 3px;"
+                     data-bind="template: { name: 'ui-delete-button-template', data: deletion, if: deletion != undefined }">
+
+                </div>
+
+                <button class="ui-expander-expand-button ui-text-button ui-icons-32 icons-expand"
+                        title="Expand / shrink details and settings">
+                </button>
+            </div>
+            <div class="ui-expander-content">
+                <div class="ui-text-align-left">
+                    <div class="ui-content-subtitle-subsection">Options</div>
+
+                    <label class="ui-flexbox">
+                        <span class="ui-v-center">Name</span>
+                        <input class="ui-flex-fill" type="text" data-bind="value: name">
+                    </label>
+
+                    <label class="ui-flexbox">
+                        <input type="checkbox" data-bind="checked: isRulesetEnabled">
+                        <span class="ui-v-center">Enable domain ruleset</span>
+                    </label>
+
+                    <label class="ui-flexbox">
+                        <input type="checkbox" data-bind="checked: isMatchRegex">
+                        <span class="ui-v-center">Use regular expression</span>
+                    </label>
+
+                    <label class="ui-flexbox">
+                        <span class="ui-v-center">Match Url</span>
+                        <input class="ui-flex-fill" type="text" data-bind="value: matchUrl">
+                    </label>
+
+                    <div class="ui-content-subtitle-subsection">Rules</div>
+
+                    <div class="ui-rules-listing"
+                         data-bind="template: { name: 'domain-rule-item-template',
+                                 foreach: rules, visible: rules().length > 0 }">
+                    </div>
+
+                    <!-- Rules placeholder -->
+                    <div id="ui-rules-placeholder"
+                         class="ui-items-placeholder"
+                         data-bind="template: { name: 'ui-domain-rules-placeholder' }, visible: rules().length == 0">
+                    </div>
+
+                    <div class="ui-spacing"></div>
+
+                    <label class="ui-flexbox">
+                        <span class="ui-v-center">Rule kind</span>
+                        <select class="ui-flex-fill" data-bind="options: $root.supportedRules, optionsText: 'name', value: ruleCreationKind"></select>
+                    </label>
+
+                    <a href="#" class="ui-rule-create ui-items-create ui-button"
+                       data-bind="click: addNewRule">
+                        <div>
+                            <div>Add rule</div>
+                        </div>
+                    </a>
+                    <div data-bind="visible: isDirty">
+                        <div class="ui-content-subtitle"></div>
+                        <div class="ui-flexbox">
+                            <a href="#" class="ui-button-outline"
+                               data-bind="click: revertChangesCommand">
+                                <div>Revert changes</div>
+                            </a>
+
+                            <a href="#" class="ui-button-outline"
+                               data-bind="click: saveChangesCommand">
+                                <div>Save changes</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </expander>
+    </script>
+</head>
+</html>

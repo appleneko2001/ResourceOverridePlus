@@ -9,13 +9,23 @@
 
     $(window).on("click", function(e) {
         const $target = $(e.target);
-        if (e.target.id === "optionsBtn") {
-            ui.optionsPopOver.toggle();
-            ui.helpOverlay.hide();
-        } else {
-            if ($target.closest("#optionsPopOver").length === 0) {
-                ui.optionsPopOver.hide();
+
+        switch (e.target.id){
+            case "newUiPageBtn":
+            {
+                window.open("./new-ui/options.html", "_blank");
+            }break;
+
+            case "optionsBtn":
+            {
+                ui.optionsPopOver.toggle();
+                ui.helpOverlay.hide();
+                return;
             }
+        }
+
+        if ($target.closest("#optionsPopOver").length === 0) {
+            ui.optionsPopOver.hide();
         }
     });
 

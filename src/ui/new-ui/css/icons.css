@@ -58,11 +58,6 @@
     --icon-size: 64px;
 }
 
-[class^='ui-icons-'], [class*=' ui-icons-'] {
-    max-width: var( --icon-size);
-    max-height: var( --icon-size);
-}
-
 [class^='ui-icons-']:before, [class*=' ui-icons-']:before {
     background-color: var(--foreground);
     -webkit-mask: var(--icon-url) no-repeat;

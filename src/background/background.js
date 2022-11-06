@@ -159,6 +159,10 @@
             case "deleteDomain": {
                 bgapp.mainStorage.delete(request.id)
                     //.then(syncAllInstances)
+                    .then(function (_){
+                        // Send empty response to avoid Unchecked runtime error.
+                        sendResponse('');
+                    })
                     .catch(simpleError);
                 delete bgapp.ruleDomains[request.id];
             }break;

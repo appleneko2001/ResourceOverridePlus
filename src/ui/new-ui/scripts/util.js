@@ -8,6 +8,23 @@ function IPCRequestTask(action, params, onSuccess){
     chrome.runtime.sendMessage(params, onSuccess);
 }
 
+function IPCRequestPromise(action, params, onSuccess){
+    return new Promise((resolve, reject) =>{
+        try{
+            IPCRequestTask(action, params, (answer) => {
+                if(onSuccess === undefined)
+                    onSuccess = function (_) {};
+
+                onSuccess(answer);
+                resolve(answer);
+            });
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+}
+
 function RequestBackgroundTask(action, params, onSuccess){
     params.action = action;
     chrome.runtime.sendMessage(params, onSuccess);

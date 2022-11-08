@@ -8,6 +8,8 @@
         <script src="scripts/templates-import.js"></script>
 
         <!-- Data templates import -->
+        <link rel="import" type="text/html" href="resources/languages/en.html" id="prefer-language">
+
         <link rel="import" type="text/html" href="resources/templates/part-templates.html" id="part-templates-import">
         <link rel="import" type="text/html" href="resources/templates/ui-rules-templates.html" id="rules-templates-import">
         <link rel="import" type="text/html" href="resources/templates/ui-domains-templates.html" id="domain-templates-import">
@@ -62,7 +64,7 @@
                     <div id="ui-page-loading"
                          style="display: block;"
                          data-bind="visible: isSuccess == undefined">
-                        <div>Please wait, page is loading...</div>
+                        <div data-bind="template: {name: 'start.loading'}">Please wait, page is loading...</div>
                     </div>
 
                     <!-- Show error message if noscript active -->
@@ -82,25 +84,7 @@
 
                     <!-- Show error message if KnockoutJS fail (view model might fail mostly, the lib itself is pretty good though) -->
                     <div style="display: none;"
-                         data-bind="visible: isSuccess == false">
-                        <h2>Oops :(</h2>
-                        <div>Something impossible happened lol</div>
-                        <div>Extension view model couldn't be loaded!!! HOW?!</div>
-
-                        <div>You can try to submit issue about this to my repository if you can't solve it by yourself or you wanna improve it</div>
-                        <div>Thanks!</div>
-                        <a href="https://github.com/appleneko2001/ResourceOverridePlus/issues/new">
-                            <p>Submit a new issue to repository</p>
-                        </a>
-
-                        <p>PLZ DON'T FORGET TELL ME WHICH BROWSER YOU USE, VERSION OF BROWSER</p>
-                        <p>AND VERSION OF RESOURCE OVERRIDE EXTENSION !!!!</p>
-
-                        <h4>Error message</h4>
-                        <div data-bind="text: message"></div>
-
-                        <h4>Stacktrace</h4>
-                        <div data-bind="text: stack"></div>
+                         data-bind="visible: isSuccess == false, template: {name: 'start.fail.message'}">
                     </div>
 
                     <div id="ui-tab-content"
@@ -111,36 +95,29 @@
                         <div id="ui-page-home"
                              class="ui-invisible">
                             <div class="ui-content-group-warn">
-                                <div class="ui-content-title">Disclaimer</div>
-                                <div>
-                                    <span>Please <b>use it at your own risk and responsibility</b> to what did you do with our extension!</span>
-                                    <span>It used for correct frontend scripts, styles and some personal customizations,</span>
-                                    <span><b>not for abuse and "hacking" or making "fake" things on their sites !</b></span>
-                                    <div><b>If you can't take responsibility</b>, then <b>do not use this extension !</b></div>
-                                </div>
+                                <div class="ui-content-title"
+                                     data-bind="template: {name: 'home.disclaimer.title'}"></div>
+                                <div data-bind="template: {name: 'home.disclaimer.text'}"></div>
                             </div>
                             <div class="ui-content-group">
-                                <div class="ui-content-title">Welcome to ResourceOverridePlus!</div>
-                                <div class="ui-content-subtitle">a enhanced version of Resource Override</div>
-                                <div>
-                                    <span>Resource Override is an extension to help you gain full control of any website by redirecting traffic, replacing, editing, or inserting new content.</span>
-                                    <span>Basically, you can use Resource Override to replace script, style-sheet and image by some simple rules.</span>
-                                </div>
+                                <div class="ui-content-title"
+                                     data-bind="template: {name: 'home.title'}"></div>
+                                <div class="ui-content-subtitle"
+                                     data-bind="template: {name: 'home.subtitle'}"></div>
+                                <div data-bind="template: {name: 'home.about'}"></div>
                             </div>
                             <div class="ui-content-group">
-                                <div class="ui-content-subtitle">Getting started</div>
-                                <div>
-                                    <span>To use this extension, you should have one or more domain ruleset, and make sure they are enabled.</span>
-                                    <span>To add domain rule, you need to press "Domains" tab from left side first.</span>
-                                    <span>Then add a domain by click "Add a domain" button, and then add operation rules to let it works.</span>
-                                </div>
+                                <div class="ui-content-subtitle"
+                                     data-bind="template: {name: 'home.usage.subtitle'}"></div>
+                                <div data-bind="template: {name: 'home.usage.text'}"></div>
                             </div>
                         </div>
 
                         <!-- Domains tab -->
                         <div id="ui-page-domains"
                              class="ui-invisible">
-                            <div class="ui-content-title">Domains and rules</div>
+                            <div class="ui-content-title"
+                                 data-bind="template: {name: 'domains.title'}"></div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
                             <div id="ui-domains-listing"
@@ -174,38 +151,49 @@
 
                         <!-- Settings tab -->
                         <div id="ui-page-settings" class="ui-invisible">
-                            <div class="ui-content-title">Settings</div>
+                            <div class="ui-content-title"
+                                 data-bind="template: {name: 'settings.title'}">Settings</div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
 
                             <div class="ui-content-group">
-                                <div class="ui-content-subtitle">Appearance - options</div>
+                                <div class="ui-content-subtitle"
+                                     data-bind="template: {name: 'settings.appearance.subtitle'}"></div>
                                 <label class="ui-flexbox">
-                                    <span class="ui-v-center">Theme</span>
+                                    <span class="ui-v-center"
+                                          data-bind="template: {name: 'settings.appearance.theme'}"></span>
                                     <select class="ui-flex-fill" data-bind="options: themes, optionsText: 'name',
                                         optionsValue: 'id', value: selectedTheme"></select>
                                 </label>
                                 <label class="ui-flexbox">
-                                    <span class="ui-v-center">Prefer narrow sidebar</span>
+                                    <span class="ui-v-center"
+                                          data-bind="template: {name: 'settings.appearance.prefer_narrow_sidebar'}"></span>
                                     <input type="checkbox" data-bind="checked: isPreferNarrowSideBar">
+                                </label>
+
+                                <label class="ui-flexbox">
+                                    <span class="ui-v-center">Language</span>
+                                    <select class="ui-flex-fill" data-bind="options: languages, optionsText: 'name',
+                                        optionsValue: 'id', value: language"></select>
                                 </label>
                             </div>
 
                             <div class="ui-content-group">
-                                <div class="ui-content-subtitle">Import and export settings</div>
+                                <div class="ui-content-subtitle"
+                                     data-bind="template: {name: 'settings.import_export.subtitle'}"></div>
 
                                 <div class="ui-flexbox">
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: importV1OptionsCommand">
-                                        <div>Import (old version)</div>
+                                        <div data-bind="template: {name: 'settings.import_export.import_v1.text'}"></div>
                                     </a>
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: loadOptionsCommand">
-                                        <div>Import</div>
+                                        <div data-bind="template: {name: 'settings.import_export.import.text'}"></div>
                                     </a>
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: exportOptionsCommand">
-                                        <div>Export</div>
+                                        <div data-bind="template: {name: 'settings.import_export.export.text'}"></div>
                                     </a>
                                 </div>
                             </div>
@@ -213,45 +201,38 @@
 
                         <!-- Help tab -->
                         <div id="ui-page-help" class="ui-invisible">
-                            <div class="ui-content-title">Help x About</div>
+                            <div class="ui-content-title"
+                                 data-bind="template: {name: 'help.title'}"></div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
 
-                            <div class="ui-content-subtitle">Known issues</div>
+                            <div class="ui-content-subtitle"
+                                 data-bind="template: {name: 'help.known_issues.subtitle'}"></div>
                             <div>
                                 <span>URL to URL rule action not always working as expected.</span>
                                 <span>If you want re-direct such thing like JavaScript, CSS (Style sheet), Image or etc.,</span>
                                 <span>you may use HTML Element attribute replace on preload instead.</span>
                             </div>
 
-                            <div class="ui-content-subtitle">About</div>
+                            <div class="ui-content-subtitle"
+                                 data-bind="template: {name: 'help.about.subtitle'}"></div>
 
-                            <div>
-                                <span>ResourceOverridePlus is a</span>
-                                <a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">free and open-source software.</a>
+                            <div data-bind="template: {name: 'help.about.text1'}">
                             </div>
-                            <span>It means you are able to use, study this extension for free.</span>
-                            <span>Also you are able to modify, contribute this extension to make this extension more powerful and stable!</span>
-                            <span>You can visit to our GitHub Repository freely!</span>
-                            <a class="ui-link-block" href="https://github.com/appleneko2001/ResourceOverridePlus">ResourceOverridePlus Repository</a>
-                            <a class="ui-link-block" href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride Repository</a>
+                            <div data-bind="template: {name: 'help.about.text2'}">
+                            </div>
 
                             <div class="ui-spacing"></div>
 
-                            <div>We using those third-party feature library in this extension:</div>
+                            <div data-bind="template: {name: 'help.about.third_party'}"></div>
 
                             <ul data-bind="template: { name: 'ui-third-party-lib-info', foreach: thirdPartyLibs }">
 
                             </ul>
                             <div class="ui-spacing"></div>
 
-                            <div>Options UI design is inspired by AdBlockPlus Options UI</div>
-                            <span>ResourceOverridePlus is my personal rework project, based on</span>
-                            <a href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride by Kyle Paulsen</a>
-                            <span>project and do some enhancements on features,</span>
-                            <span>also the UI will be refreshed to make it looks more modern and understandable.</span>
-
-
+                            <div data-bind="template: {name: 'help.about.us.text'}">
+                            </div>
                         </div>
                     </div>
                 </div>

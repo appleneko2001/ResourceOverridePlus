@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ResourceOverridePlus English (en_US) UI</title>
+
+        <!-- UI Loading placeholder -->
+        <script type="text/html" id="start.loading">
+            <span>Please wait, page is loading...</span>
+        </script>
+
+        <!-- On start fail message -->
+        <script type="text/html" id="start.fail.message">
+            <h2>Oops :(</h2>
+            <div>Something impossible happened lol</div>
+            <div>Extension view model couldn't be loaded!!! HOW?!</div>
+
+            <div>You can try to submit issue about this to my repository if you can't solve it by yourself or you wanna improve it</div>
+            <div>Thanks!</div>
+            <a href="https://github.com/appleneko2001/ResourceOverridePlus/issues/new">
+                <p>Submit a new issue to repository</p>
+            </a>
+
+            <p>PLZ DON'T FORGET TELL ME WHICH BROWSER YOU USE, VERSION OF BROWSER</p>
+            <p>AND VERSION OF RESOURCE OVERRIDE EXTENSION !!!!</p>
+
+            <h4>Error message</h4>
+            <div data-bind="text: message"></div>
+
+            <h4>Stacktrace</h4>
+            <div data-bind="text: stack"></div>
+        </script>
+
+        <!-- Home section -->
+        <!-- Disclaimer title -->
+        <script type="text/html" id="home.disclaimer.title">
+            <span>Disclaimer</span>
+        </script>
+
+        <!-- Disclaimer text -->
+        <script type="text/html" id="home.disclaimer.text">
+            <span>Please <b>use it at your own risk and responsibility</b> to what did you do with our extension!</span>
+            <span>It used for correct frontend scripts, styles and some personal customizations,</span>
+            <span><b>not for abuse and "hacking" or making "fake" things on their sites !</b></span>
+            <div><b>If you can't take responsibility</b>, then <b>do not use this extension !</b></div>
+        </script>
+
+        <!-- Home page title -->
+        <script type="text/html" id="home.title">
+            <span>Welcome to ResourceOverridePlus!</span>
+        </script>
+
+        <!-- Home page subtitle -->
+        <script type="text/html" id="home.subtitle">
+            <span>a enhanced version of Resource Override</span>
+        </script>
+
+        <!-- Home page text under subtitle -->
+        <script type="text/html" id="home.about">
+            <span>Resource Override is an extension to help you gain full control of any website by redirecting traffic, replacing, editing, or inserting new content.</span>
+            <span>Basically, you can use Resource Override to replace script, style-sheet and image by some simple rules.</span>
+        </script>
+
+        <!-- Home page getting started subtitle -->
+        <script type="text/html" id="home.usage.subtitle">
+            <span>Getting started</span>
+        </script>
+
+        <!-- Home page getting started text -->
+        <script type="text/html" id="home.usage.text">
+            <span>To use this extension, you should have one or more domain ruleset, and make sure they are enabled.</span>
+            <span>To add domain rule, you need to press "Domains" tab from left side first.</span>
+            <span>Then add a domain by click "Add a domain" button, and then add operation rules to let it works.</span>
+        </script>
+
+        <!-- Domains section -->
+        <!-- TODO: complete this shit -->
+        <!-- Domains and rules title -->
+        <script type="text/html" id="domains.title">
+            <span>Domains and rules</span>
+        </script>
+
+        <!-- Add domain button text -->
+        <script type="text/html" id="domains.actions.add.text">
+            <span>Add a domain</span>
+        </script>
+
+        <!-- Settings section -->
+        <!-- Settings title -->
+        <script type="text/html" id="settings.title">
+            <span>Settings</span>
+        </script>
+
+        <!-- Appearance subtitle -->
+        <script type="text/html" id="settings.appearance.subtitle">
+            <span>Appearance - options</span>
+        </script>
+
+        <!-- Appearance -> Theme -->
+        <script type="text/html" id="settings.appearance.theme">
+            <span>Theme</span>
+        </script>
+
+        <!-- Appearance -> Prefer narrow sidebar -->
+        <script type="text/html" id="settings.appearance.prefer_narrow_sidebar">
+            <span>Prefer narrow sidebar</span>
+        </script>
+
+        <!-- Import and export subtitle -->
+        <script type="text/html" id="settings.import_export.subtitle">
+            <span>Import and export settings</span>
+        </script>
+
+        <!-- Import v1 button text -->
+        <script type="text/html" id="settings.import_export.import_v1.text">
+            <span>Import (old version)</span>
+        </script>
+
+        <!-- Import button text -->
+        <script type="text/html" id="settings.import_export.import.text">
+            <span>Import</span>
+        </script>
+
+        <!-- Export button text -->
+        <script type="text/html" id="settings.import_export.export.text">
+            <span>Export</span>
+        </script>
+
+        <!-- Help section -->
+        <!-- Help and about title -->
+        <script type="text/html" id="help.title">
+            <span>Help x About</span>
+        </script>
+
+        <!-- Known issues subtitle -->
+        <script type="text/html" id="help.known_issues.subtitle">
+            <span>Known issues</span>
+        </script>
+
+        <!-- About subtitle -->
+        <script type="text/html" id="help.about.subtitle">
+            <span>About</span>
+        </script>
+
+        <!-- About text 1 -->
+        <script type="text/html" id="help.about.text1">
+            <span>ResourceOverridePlus is a</span>
+            <a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">free and open-source software.</a>
+        </script>
+
+        <!-- About text 2 -->
+        <script type="text/html" id="help.about.text2">
+            <span>It means you are able to use, study this extension for free.</span>
+            <span>Also you are able to modify, contribute this extension to make this extension more powerful and stable!</span>
+            <span>You can visit to our GitHub Repository freely!</span>
+            <a class="ui-link-block" href="https://github.com/appleneko2001/ResourceOverridePlus">ResourceOverridePlus Repository</a>
+            <a class="ui-link-block" href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride Repository</a>
+        </script>
+
+        <!-- About -> Third party libraries -->
+        <script type="text/html" id="help.about.third_party">
+            <span>We using those third-party feature libraries in this extension:</span>
+        </script>
+
+        <!-- TODO: same as domains section -->
+
+        <!-- About -> Final section -->
+        <script type="text/html" id="help.about.us.text">
+            <div>Options UI design is inspired by AdBlockPlus Options UI</div>
+            <span>ResourceOverridePlus is my personal rework project, based on</span>
+            <a href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride by Kyle Paulsen</a>
+            <span>project and do some enhancements on features,</span>
+            <span>also the UI will be refreshed to make it looks more modern and understandable.</span>
+        </script>
+    </head>
+</html>

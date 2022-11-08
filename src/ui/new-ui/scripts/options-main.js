@@ -1,5 +1,15 @@
 // Frontend script for options page
 
+const languages = [
+    {
+        name: "English",
+        id: "en"
+    }, {
+        name: "中文",
+        id: "zh"
+    }
+];
+
 const themePalettes = [
     {
         name: "Light",
@@ -17,6 +27,7 @@ const themePalettes = [
 ];
 
 const templatesImportList = [
+    "prefer-language",
     "part-templates-import",
     "rules-templates-import",
     "domain-templates-import"
@@ -133,7 +144,7 @@ function OpenJsonFileDialog(resolver, onSuccess, onFail){
 }
 
 // In this frontend script used KnockoutJS library to power MVVM system
-
+let languageSetter = document.head.querySelector("link#prefer-language");
 let themeColourPalette = document.head.querySelector("link#theme-colour-palette");
 let codemirrorThemeSetter = document.head.querySelector("link#codemirror-theme");
 let tabContentContainer = document.body.querySelector("#ui-tab-content");
@@ -185,7 +196,6 @@ function GetRuleDisplayName(type){
 }
 
 function ChangeThemeColourPalette(id){
-
     const result = themePalettes.find(a => a.id === id);
 
     if(result === undefined)
@@ -196,6 +206,11 @@ function ChangeThemeColourPalette(id){
 
     themeColourPalette.href = `css/colours/${result.id}.css`;
     codemirrorThemeSetter.href = `libraries/codemirror5/theme/${result.codemirror}.css`;
+    return true;
+}
+
+function ChangeLanguage(locate){
+    languageSetter.href = `resources/languages/${locate}.html`;
     return true;
 }
 
@@ -553,7 +568,7 @@ function DomainRulesetViewModel(domain){
 }
 
 // Main view model
-function ExtensionOptionsViewModel(){
+function ExtensionOptionsViewModel() {
     const self = this;
 
     // Page is loaded successfully.
@@ -575,6 +590,9 @@ function ExtensionOptionsViewModel(){
 
     self.selectedTab = ko.observable();
     self.tabs = tabsCollection;
+
+    self.language = ko.observable("en");
+    self.languages = languages;
 
     self.thirdPartyLibs = [
         {
@@ -603,7 +621,7 @@ function ExtensionOptionsViewModel(){
 
     self.isNarrowSight = ko.observable(IsNarrowSight(self.isPreferNarrowSideBar())); // Should be true if main viewport width is less than 800px
 
-    function createDomainRulesetCore (vm, modelCreator){
+    function createDomainRulesetCore(vm, modelCreator) {
         const index = vm.domains().length + 1;
         const id = `d${index}`;
 
@@ -612,12 +630,12 @@ function ExtensionOptionsViewModel(){
         const viewModel = new DomainRulesetViewModel(model);
 
         // Change revert changes button to cancel creation button
-        viewModel.revertChangesCommand = function (vm){
+        viewModel.revertChangesCommand = function (vm) {
             vm.revertChangesFromModel();
             self.rulesetCreation(null);
         }
 
-        viewModel.saveChangesCommand = function (vm){
+        viewModel.saveChangesCommand = function (vm) {
             vm.storeChangesToModel();
             self.rulesetCreation(null);
 
@@ -629,81 +647,84 @@ function ExtensionOptionsViewModel(){
 
         viewModel.isDirty(true);
 
-        vm.rulesetCreation (viewModel);
+        vm.rulesetCreation(viewModel);
     }
 
-    self.createDomainRuleset = function (vm){
-        if(self.isCreatingRuleset())
+    self.createDomainRuleset = function (vm) {
+        if (self.isCreatingRuleset())
             return;
 
         createDomainRulesetCore(vm, CreateDomainRulesetDummy);
     }
 
-    self.getRuleTemplateKey = function (ruleVm){
+    self.getRuleTemplateKey = function (ruleVm) {
         return GetRuleTemplateName(ruleVm.kind)
     }
 
     // KnockoutJS need this option
-    self.importV1OptionsCommand = function (_){
-        OpenJsonFileDialog(function (json){
-            // TODO: implementation
-            // const model = JSON.parse(json);
-        }, () => pushToast("Imported rules."),
-                error => pushToast(`Unable to import: ${error}`));
+    self.importV1OptionsCommand = function (_) {
+        OpenJsonFileDialog(function (json) {
+                // TODO: implementation
+                // const model = JSON.parse(json);
+            }, () => pushToast("Imported rules."),
+            error => pushToast(`Unable to import: ${error}`));
     }
 
     //
-    self.loadOptionsCommand = function (vm){
-        OpenJsonFileDialog(function (json){
-            const model = JSON.parse(json);
-            vm.selectedTheme(model.theme);
+    self.loadOptionsCommand = function (vm) {
+        OpenJsonFileDialog(function (json) {
+                const model = JSON.parse(json);
+                vm.selectedTheme(model.theme);
 
-            let domains = [];
-            let increment = 1;
-            let lastIndex = 0;
+                let domains = [];
+                let increment = 1;
+                let lastIndex = 0;
 
-            for(const i in vm.domains()){
-                if(i < lastIndex)
-                    continue;
+                for (const i in vm.domains()) {
+                    if (i < lastIndex)
+                        continue;
 
-                lastIndex = i;
-            }
+                    lastIndex = i;
+                }
 
-            for(const domain of model.domains){
-                const index = lastIndex + increment;
-                const id = `d${index}`;
-                increment = increment + 1;
+                for (const domain of model.domains) {
+                    const index = lastIndex + increment;
+                    const id = `d${index}`;
+                    increment = increment + 1;
 
-                domains.push({
-                    id: id,
-                    on: domain.on,
-                    name: domain.name,
-                    isMatchRegex: domain.isMatchRegex,
-                    matchUrl: domain.matchUrl,
-                    rules: domain.rules
+                    domains.push({
+                        id: id,
+                        on: domain.on,
+                        name: domain.name,
+                        isMatchRegex: domain.isMatchRegex,
+                        matchUrl: domain.matchUrl,
+                        rules: domain.rules
+                    });
+                }
+
+                const msg = {
+                    action: "saveDomains",
+                    domains: domains
+                };
+
+                chrome.runtime.sendMessage(msg, function (_) {
                 });
-            }
-
-            const msg = {
-                action: "saveDomains",
-                domains: domains
-            };
-
-            chrome.runtime.sendMessage(msg, function (_){});
-        }, () => pushToast("Settings has loaded."),
-                error => pushToast(`Unable to load settings: ${error}`));
+            }, () => pushToast("Settings has loaded."),
+            error => pushToast(`Unable to load settings: ${error}`));
     }
 
     // Method options might usable (vm)
-    self.exportOptionsCommand = function (_){
-        chrome.runtime.sendMessage({action: "getDomains"}, function (result){
+    self.exportOptionsCommand = function (_) {
+        chrome.runtime.sendMessage({action: "getDomains"}, function (result) {
             const exportData = {
                 version: 2,
                 theme: self.selectedTheme(),
                 domains: []
             }
 
-            if(result.length){ result.forEach(domain => exportData.domains.push(domain)); }
+            if (result.length) {
+                result.forEach(domain => exportData.domains.push(domain));
+            }
 
             const json = JSON.stringify(exportData);
             const blob = new Blob([json], {type: "text/plain"});
@@ -719,17 +740,17 @@ function ExtensionOptionsViewModel(){
 
     self.changeTabCommand = tab => self.selectedTab(tab.tab);
 
-    self.appendDomainRuleset = function (ruleset){
+    self.appendDomainRuleset = function (ruleset) {
         const deletion = new DeletionCommand();
 
-        deletion.performDeletion = function (){
+        deletion.performDeletion = function () {
             chrome.runtime.sendMessage(
                 {action: "deleteDomain", id: ruleset.model.id},
-                function (_){
+                function (_) {
                     self.domains.remove(ruleset);
                     pushToast(`Ruleset "${ruleset.model.name}" has deleted from disk.`, {
                         text: "UNDO",
-                        action: function (_){
+                        action: function (_) {
                             // TODO: UNDO Feature
                         }
                     });
@@ -746,16 +767,16 @@ function ExtensionOptionsViewModel(){
     // On document body (main content) resized
     addEventListener("resize", _ => self.isNarrowSight(IsNarrowSight(self.isPreferNarrowSideBar())));
 
-    self.isPreferNarrowSideBar.subscribe(function (a){
+    self.isPreferNarrowSideBar.subscribe(function (a) {
         IPCRequestTask(IPCRequestAction.SetProperty, {prop: "prefer-narrow-side-bar", value: a},
             _ => self.isNarrowSight(IsNarrowSight(self.isPreferNarrowSideBar())));
     });
 
     self.rulesetCreation.subscribe(v => self.isCreatingRuleset(v != null));
 
-    self.selectedTab.subscribe(function (page){
+    self.selectedTab.subscribe(function (page) {
         const finalId = `ui-page-${page}`;
-        for (const content of tabContentContainer.children){
+        for (const content of tabContentContainer.children) {
             let id = content.id;
             content.classList.toggle("ui-invisible", id !== finalId);
         }
@@ -763,40 +784,52 @@ function ExtensionOptionsViewModel(){
         IPCRequestTask(IPCRequestAction.SetProperty, {prop: "last-tab", value: page}, undefined);
     })
 
-    self.selectedTheme.subscribe(function (v){
+    self.selectedTheme.subscribe(function (v) {
         const result = ChangeThemeColourPalette(v);
 
-        if(!result){
-            self.selectedTheme = "dark";
-        }
-        else{
+        if (!result) {
+            self.selectedTheme("dark");
+        } else {
             IPCRequestTask(IPCRequestAction.SetProperty, {prop: "theme", value: v}, undefined);
         }
     })
 
+    self.language.subscribe(function (v) {
+        if (!ChangeLanguage(v))
+            self.language("en");
+        else
+            IPCRequestTask(IPCRequestAction.SetProperty, {prop: "lang", value: v}, undefined);
+    })
+
     // Load state
     // Get domains ruleset from storage
-    chrome.runtime.sendMessage({action: "getDomains"}, function (result){
-        if(result.length){
-            result.forEach(function (domain){
+    chrome.runtime.sendMessage({action: "getDomains"}, function (result) {
+        if (result.length) {
+            result.forEach(function (domain) {
                 self.appendDomainRuleset(new DomainRulesetViewModel(domain));
             });
         }
     });
 
     // Load settings from storage
+    self.LoadSettings = async function (){
+        return await Promise.all([
+            IPCRequestPromise(IPCRequestAction.GetProperty, {prop: "lang"},
+                v => self.language((ChangeLanguage(v.value) ? v.value : "en"))),
 
-    // Get theme setting
-    IPCRequestTask(IPCRequestAction.GetProperty, { prop: "theme" },
-            v => self.selectedTheme((ChangeThemeColourPalette(v.value) ? v.value : "dark")));
+            // Get theme setting
+            IPCRequestPromise(IPCRequestAction.GetProperty, {prop: "theme"},
+                v => self.selectedTheme((ChangeThemeColourPalette(v.value) ? v.value : "dark"))),
 
-    // Get 'prefer narrow sidebar' status
-    IPCRequestTask(IPCRequestAction.GetPropertyAsBool, {prop: "prefer-narrow-side-bar"},
-        v => self.isPreferNarrowSideBar((v.value === undefined ? false : v.value)));
+            // Get 'prefer narrow sidebar' status
+            IPCRequestPromise(IPCRequestAction.GetPropertyAsBool, {prop: "prefer-narrow-side-bar"},
+                v => self.isPreferNarrowSideBar((v.value === undefined ? false : v.value))),
 
-    // Get last selected tab
-    IPCRequestTask(IPCRequestAction.GetProperty, {prop: "last-tab"},
-            v => self.selectedTab((IsEntryExist(v.value) ? v.value : defaultStartPage)));
+            // Get last selected tab
+            IPCRequestPromise(IPCRequestAction.GetProperty, {prop: "last-tab"},
+                v => self.selectedTab((IsEntryExist(v.value) ? v.value : defaultStartPage)))
+        ]);
+    }
 }
 
 let viewModel = null;
@@ -821,14 +854,13 @@ let pushToast = function (msg, button) {
 }
 
 const createViewModel = async function (){
-    viewModel = new ExtensionOptionsViewModel();
+    const vm = new ExtensionOptionsViewModel();
+    viewModel = vm;
+    await vm.LoadSettings();
 }
 
-Promise.all(
-    [
-        importTemplatesListToHead(templatesImportList),
-        createViewModel()
-    ])
+new Promise(r => createViewModel().then(r))
+    .then(_ => importTemplatesListToHead(templatesImportList))
     .then(_ => ko.applyBindings(viewModel))
     .catch(function (e) {
         const vm = new function (){

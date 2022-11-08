@@ -90,7 +90,8 @@
                 <span class="ui-icons-32"
                      data-bind="class: icon">
                 </span>
-                <span class="ui-button-text" data-bind="text: text"></span>
+                <span class="ui-button-text"
+                      data-bind="template: {name: $data.text}"></span>
             </div>
         </a>
     </script>

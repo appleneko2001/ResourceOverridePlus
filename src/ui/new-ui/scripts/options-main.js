@@ -71,22 +71,19 @@ const supportedRulesList = [
 const tabsCollection = [
     {
         tab: "home",
-        text: "Home",
+        text: "tabs.home",
         icon: "icons-home"
-    },
-    {
+    }, {
         tab: "domains",
-        text: "Domains",
+        text: "tabs.domains",
         icon: "icons-rule-folder"
-    },
-    {
+    }, {
         tab: "settings",
-        text: "Settings",
+        text: "tabs.settings",
         icon: "icons-tune"
-    },
-    {
+    }, {
         tab: "help",
-        text: "Help",
+        text: "tabs.help",
         icon: "icons-help"
     }
 ];

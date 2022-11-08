@@ -205,7 +205,6 @@ a.ui-button-outline:hover > div{
     display: block;
     text-align: center;
     overflow: hidden;
-    margin-top: 16px;
 }
 
 .ui-expander-header{

@@ -103,9 +103,10 @@
                 data-bind="css: { 'ui-invisible': hideDeleteButton() }, click: requestDelete, clickBubble: false">
         </button>
         <div data-bind="css: { 'ui-invisible': isConfirming() == false }">
-            <span>Confirm delete? No turn back way !</span>
-            <button data-bind="click: performDeletion, clickBubble: false">Yes</button>
-            <button data-bind="click: giveUp, clickBubble: false">No</button>
+            <span data-bind="template: {name: 'delete.confirm'}"></span>
+            <button data-bind="click: performDeletion, clickBubble: false,
+                    template: {name: 'yes'}"></button>
+            <button data-bind="click: giveUp, clickBubble: false, template: {name: 'no'}"></button>
         </div>
     </script>
 

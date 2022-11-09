@@ -137,8 +137,7 @@
                                id="ui-domains-create"
                                class="ui-items-create ui-button"
                                data-bind="click: createDomainRuleset, visible: isCreatingRuleset == false">
-                                <div>
-                                    <div>Add a domain</div>
+                                <div data-bind="template: {name: 'domains.actions.add.text'}">
                                 </div>
                             </a>
 

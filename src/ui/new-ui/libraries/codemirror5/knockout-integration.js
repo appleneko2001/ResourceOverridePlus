@@ -4,12 +4,13 @@ ko.bindingHandlers.codemirror = {
         function initEditor(){
             const editor = CodeMirror(element, options);
 
+            editor.setValue(options.text() ?? "");
+            editor.refresh();
+
             editor.on('change', function(cm) {
                 const value = valueAccessor();
                 value.text(cm.getValue());
             });
-            editor.setValue(options.text() ?? "");
-            editor.refresh();
 
             element.editor = editor;
         }
@@ -35,7 +36,7 @@ ko.bindingHandlers.codemirror = {
         else
             initEditor();
     },
-    update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
+    update: function(element) {
         if (element.editor)
             element.editor.refresh();
     }

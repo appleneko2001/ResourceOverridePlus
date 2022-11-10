@@ -16,7 +16,8 @@
                  data-bind="click: switchExpandedCommand">
                 <div class="ui-header-content ui-flexbox">
                     <span class="ui-text-align-left ui-icons-24 icons-edit-document ui-v-center"></span>
-                    <span class="ui-flex-fill ui-text-align-center">Code editor</span>
+                    <span class="ui-flex-fill ui-text-align-center"
+                          data-bind="translate:'editor'"></span>
                 </div>
 
                 <button class="ui-expander-expand-button ui-text-button ui-icons-32 icons-expand"
@@ -41,9 +42,8 @@
         <li>
             <a class="ui-link-block" data-bind="text: name, attr: { href: url }"></a>
             <i data-bind="text: desc"></i>
-            <div data-bind="visible: version !== undefined">
-                <span>Version: </span>
-                <span data-bind="text: version"></span>
+            <div data-bind="visible: hadVersion">
+                <span data-bind="translate:{key:'version',params:{'version':version}}"></span>
             </div>
         </li>
     </script>
@@ -91,7 +91,7 @@
                      data-bind="class: icon">
                 </span>
                 <span class="ui-button-text"
-                      data-bind="template: {name: $data.text}"></span>
+                      data-bind="translate:$data.text"></span>
             </div>
         </a>
     </script>
@@ -103,10 +103,10 @@
                 data-bind="css: { 'ui-invisible': hideDeleteButton() }, click: requestDelete, clickBubble: false">
         </button>
         <div data-bind="css: { 'ui-invisible': isConfirming() == false }">
-            <span data-bind="template: {name: 'delete.confirm'}"></span>
+            <span data-bind="translate:'delete.confirm'"></span>
             <button data-bind="click: performDeletion, clickBubble: false,
-                    template: {name: 'yes'}"></button>
-            <button data-bind="click: giveUp, clickBubble: false, template: {name: 'no'}"></button>
+                    translate:'yes'"></button>
+            <button data-bind="click: giveUp, clickBubble: false, translate:'no'"></button>
         </div>
     </script>
 

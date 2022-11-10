@@ -27,7 +27,6 @@ const themePalettes = [
 ];
 
 const templatesImportList = [
-    "prefer-language",
     "part-templates-import",
     "rules-templates-import",
     "domain-templates-import"
@@ -194,11 +193,6 @@ function ChangeThemeColourPalette(id){
     return true;
 }
 
-function ChangeLanguage(locate){
-    languageSetter.href = `resources/languages/${locate}.html`;
-    return true;
-}
-
 function DeletionCommand(){
     const self = this;
 
@@ -256,8 +250,10 @@ const createViewModel = async function (){
     await vm.LoadSettings();
 }
 
-new Promise(r => createViewModel().then(r))
-    .then(_ => importTemplatesListToHead(templatesImportList))
+Promise.all([
+    LanguagesService.LoadSettings(),
+    new Promise(r => createViewModel().then(r))
+    ]).then(_ => importTemplatesListToHead(templatesImportList))
     .then(_ => ko.applyBindings(viewModel))
     .catch(function (e) {
         const vm = new function (){

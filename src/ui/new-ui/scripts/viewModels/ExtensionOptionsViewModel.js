@@ -22,7 +22,7 @@ function ExtensionOptionsViewModel() {
     self.selectedTab = ko.observable();
     self.tabs = tabsCollection;
 
-    self.language = ko.observable("en");
+    self.language = LanguagesService.Language;
     self.languages = languages;
 
     self.thirdPartyLibs = [
@@ -30,6 +30,7 @@ function ExtensionOptionsViewModel() {
             name: "KnockoutJS",
             desc: "A lightweight MVVM library without jQuery.",
             url: "https://github.com/knockout/knockout",
+            hadVersion: true,
             version: ko.version
         },
         {
@@ -41,6 +42,7 @@ function ExtensionOptionsViewModel() {
             name: "CodeMirror 5",
             desc: "A lightweight embedded text editor with syntax highlighting. Supports most markup and programming language, and compatible with old browsers.",
             url: "https://github.com/codemirror/codemirror5",
+            hadVersion: true,
             version: CodeMirror.version
         },
         {
@@ -225,13 +227,6 @@ function ExtensionOptionsViewModel() {
         }
     })
 
-    self.language.subscribe(function (v) {
-        if (!ChangeLanguage(v))
-            self.language("en");
-        else
-            IPCRequestTask(IPCRequestAction.SetProperty, {prop: "lang", value: v}, undefined);
-    })
-
     // Load state
     // Get domains ruleset from storage
     chrome.runtime.sendMessage({action: "getDomains"}, function (result) {
@@ -245,9 +240,6 @@ function ExtensionOptionsViewModel() {
     // Load settings from storage
     self.LoadSettings = async function (){
         return await Promise.all([
-            IPCRequestPromise(IPCRequestAction.GetProperty, {prop: "lang"},
-                v => self.language((ChangeLanguage(v.value) ? v.value : "en"))),
-
             // Get theme setting
             IPCRequestPromise(IPCRequestAction.GetProperty, {prop: "theme"},
                 v => self.selectedTheme((ChangeThemeColourPalette(v.value) ? v.value : "dark"))),

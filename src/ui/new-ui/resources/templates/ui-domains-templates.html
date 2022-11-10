@@ -11,7 +11,7 @@
             <div class="ui-expander-header"
                  data-bind="click: switchExpandedCommand">
                 <div class="ui-header-content ui-flexbox">
-                    <span class="ui-text-align-left" data-bind="visible: isDirty">Unsaved</span>
+                    <span class="ui-text-align-left" data-bind="visible: isDirty, translate:'unsaved'"></span>
                     <span class="ui-flex-fill ui-text-align-center" data-bind="text: name"></span>
                 </div>
 
@@ -28,7 +28,7 @@
                     <div class="ui-content-subtitle-subsection">Options</div>
 
                     <label class="ui-flexbox">
-                        <span class="ui-v-center">Name</span>
+                        <span class="ui-v-center" data-bind="translate:'name'">Name</span>
                         <input class="ui-flex-fill" type="text" data-bind="value: name">
                     </label>
 
@@ -63,7 +63,7 @@
                     <div class="ui-spacing"></div>
 
                     <label class="ui-flexbox">
-                        <span class="ui-v-center">Rule kind</span>
+                        <span class="ui-v-center" data-bind="translate:'domains.items.rule_kind'"></span>
                         <select class="ui-flex-fill" data-bind="options: $root.supportedRules, optionsText: 'name', value: ruleCreationKind"></select>
                     </label>
 

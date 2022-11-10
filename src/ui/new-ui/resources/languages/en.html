@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>ResourceOverridePlus English (en_US) UI</title>
+        <title>English</title>
 
         <!-- Tabs -->
         <script type="text/html" id="tabs.home">
@@ -34,18 +34,20 @@
 
             <div>You can try to submit issue about this to my repository if you can't solve it by yourself or you wanna improve it</div>
             <div>Thanks!</div>
+            <span>
             <a href="https://github.com/appleneko2001/ResourceOverridePlus/issues/new">
                 <p>Submit a new issue to repository</p>
             </a>
+            </span>
 
             <p>PLZ DON'T FORGET TELL ME WHICH BROWSER YOU USE, VERSION OF BROWSER</p>
             <p>AND VERSION OF RESOURCE OVERRIDE EXTENSION !!!!</p>
 
             <h4>Error message</h4>
-            <div data-bind="text: message"></div>
+            <div>{{message}}</div>
 
             <h4>Stacktrace</h4>
-            <div data-bind="text: stack"></div>
+            <div>{{stack}}</div>
         </script>
 
         <!-- Home section -->
@@ -102,6 +104,10 @@
             <span>Add a domain</span>
         </script>
 
+        <script type="text/html" id="domains.items.rule_kind">
+            <span>Rule kind</span>
+        </script>
+
         <!-- Settings section -->
         <!-- Settings title -->
         <script type="text/html" id="settings.title">
@@ -121,6 +127,11 @@
         <!-- Appearance -> Prefer narrow sidebar -->
         <script type="text/html" id="settings.appearance.prefer_narrow_sidebar">
             <span>Prefer narrow sidebar</span>
+        </script>
+
+        <!-- Appearance -> Language -->
+        <script type="text/html" id="settings.appearance.language">
+            <span>Language</span>
         </script>
 
         <!-- Import and export subtitle -->
@@ -202,6 +213,26 @@
 
         <script type="text/html" id="no">
             <span>No</span>
+        </script>
+
+        <script type="text/html" id="unsaved">
+            <span>Unsaved</span>
+        </script>
+
+        <script type="text/html" id="options">
+            <span>Options</span>
+        </script>
+
+        <script type="text/html" id="name">
+            <span>Name</span>
+        </script>
+
+        <script type="text/html" id="editor">
+            <span>Editor</span>
+        </script>
+
+        <script type="text/html" id="version">
+            <span>Version: {{version}}</span>
         </script>
     </head>
 </html>

@@ -8,7 +8,7 @@
         <script src="scripts/templates-import.js"></script>
 
         <!-- Data templates import -->
-        <link rel="import" type="text/html" href="resources/languages/en.html" id="prefer-language">
+        <link rel="import" type="text/html" href="resources/languages/en.html" id="fallback-language">
 
         <link rel="import" type="text/html" href="resources/templates/part-templates.html" id="part-templates-import">
         <link rel="import" type="text/html" href="resources/templates/ui-rules-templates.html" id="rules-templates-import">
@@ -19,6 +19,9 @@
 
         <!-- KnockoutJS CSP issue solution -->
         <script src="libraries/knockout-secure-binding/knockout-secure-binding-min.js"></script>
+
+        <!-- KnockoutJS language service -->
+        <script src="scripts/knockout-translate.js"></script>
 
         <!-- CodeMirror 5 embedded editor -->
         <script src="libraries/codemirror5/lib/codemirror.js"></script>
@@ -64,7 +67,7 @@
                     <div id="ui-page-loading"
                          style="display: block;"
                          data-bind="visible: isSuccess == undefined">
-                        <div data-bind="template: {name: 'start.loading'}">Please wait, page is loading...</div>
+                        <div data-bind="translate:'start.loading'">Please wait, page is loading...</div>
                     </div>
 
                     <!-- Show error message if noscript active -->
@@ -84,7 +87,8 @@
 
                     <!-- Show error message if KnockoutJS fail (view model might fail mostly, the lib itself is pretty good though) -->
                     <div style="display: none;"
-                         data-bind="visible: isSuccess == false, template: {name: 'start.fail.message'}">
+                         data-bind="visible: isSuccess == false,
+                         translate:{key:'start.fail.message',params:{'message':message,'stack':stack}}">
                     </div>
 
                     <div id="ui-tab-content"
@@ -96,20 +100,20 @@
                              class="ui-invisible">
                             <div class="ui-content-group-warn">
                                 <div class="ui-content-title"
-                                     data-bind="template: {name: 'home.disclaimer.title'}"></div>
-                                <div data-bind="template: {name: 'home.disclaimer.text'}"></div>
+                                     data-bind="translate:'home.disclaimer.title'"></div>
+                                <div data-bind="translate:'home.disclaimer.text'"></div>
                             </div>
                             <div class="ui-content-group">
                                 <div class="ui-content-title"
-                                     data-bind="template: {name: 'home.title'}"></div>
+                                     data-bind="translate:'home.title'"></div>
                                 <div class="ui-content-subtitle"
-                                     data-bind="template: {name: 'home.subtitle'}"></div>
-                                <div data-bind="template: {name: 'home.about'}"></div>
+                                     data-bind="translate:'home.subtitle'"></div>
+                                <div data-bind="translate:'home.about'"></div>
                             </div>
                             <div class="ui-content-group">
                                 <div class="ui-content-subtitle"
-                                     data-bind="template: {name: 'home.usage.subtitle'}"></div>
-                                <div data-bind="template: {name: 'home.usage.text'}"></div>
+                                     data-bind="translate:'home.usage.subtitle'"></div>
+                                <div data-bind="translate:'home.usage.text'"></div>
                             </div>
                         </div>
 
@@ -117,7 +121,7 @@
                         <div id="ui-page-domains"
                              class="ui-invisible">
                             <div class="ui-content-title"
-                                 data-bind="template: {name: 'domains.title'}"></div>
+                                 data-bind="translate:'domains.title'"></div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
                             <div id="ui-domains-listing"
@@ -137,7 +141,7 @@
                                id="ui-domains-create"
                                class="ui-items-create ui-button"
                                data-bind="click: createDomainRuleset, visible: isCreatingRuleset == false">
-                                <div data-bind="template: {name: 'domains.actions.add.text'}">
+                                <div data-bind="translate:'domains.actions.add.text'">
                                 </div>
                             </a>
 
@@ -151,27 +155,27 @@
                         <!-- Settings tab -->
                         <div id="ui-page-settings" class="ui-invisible">
                             <div class="ui-content-title"
-                                 data-bind="template: {name: 'settings.title'}">Settings</div>
+                                 data-bind="translate:'settings.title'">Settings</div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
 
                             <div class="ui-content-group">
                                 <div class="ui-content-subtitle"
-                                     data-bind="template: {name: 'settings.appearance.subtitle'}"></div>
+                                     data-bind="translate:'settings.appearance.subtitle'"></div>
                                 <label class="ui-flexbox">
                                     <span class="ui-v-center"
-                                          data-bind="template: {name: 'settings.appearance.theme'}"></span>
+                                          data-bind="translate:'settings.appearance.theme'"></span>
                                     <select class="ui-flex-fill" data-bind="options: themes, optionsText: 'name',
                                         optionsValue: 'id', value: selectedTheme"></select>
                                 </label>
                                 <label class="ui-flexbox">
                                     <span class="ui-v-center"
-                                          data-bind="template: {name: 'settings.appearance.prefer_narrow_sidebar'}"></span>
+                                          data-bind="translate:'settings.appearance.prefer_narrow_sidebar'"></span>
                                     <input type="checkbox" data-bind="checked: isPreferNarrowSideBar">
                                 </label>
 
                                 <label class="ui-flexbox">
-                                    <span class="ui-v-center">Language</span>
+                                    <span class="ui-v-center" data-bind="translate:'settings.appearance.language'"></span>
                                     <select class="ui-flex-fill" data-bind="options: languages, optionsText: 'name',
                                         optionsValue: 'id', value: language"></select>
                                 </label>
@@ -179,20 +183,20 @@
 
                             <div class="ui-content-group">
                                 <div class="ui-content-subtitle"
-                                     data-bind="template: {name: 'settings.import_export.subtitle'}"></div>
+                                     data-bind="translate:'settings.import_export.subtitle'"></div>
 
                                 <div class="ui-flexbox">
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: importV1OptionsCommand">
-                                        <div data-bind="template: {name: 'settings.import_export.import_v1.text'}"></div>
+                                        <div data-bind="translate:'settings.import_export.import_v1.text'"></div>
                                     </a>
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: loadOptionsCommand">
-                                        <div data-bind="template: {name: 'settings.import_export.import.text'}"></div>
+                                        <div data-bind="translate:'settings.import_export.import.text'"></div>
                                     </a>
                                     <a class="ui-flex-fill ui-button-outline" href="#"
                                        data-bind="click: exportOptionsCommand">
-                                        <div data-bind="template: {name: 'settings.import_export.export.text'}"></div>
+                                        <div data-bind="translate:'settings.import_export.export.text'"></div>
                                     </a>
                                 </div>
                             </div>
@@ -201,12 +205,12 @@
                         <!-- Help tab -->
                         <div id="ui-page-help" class="ui-invisible">
                             <div class="ui-content-title"
-                                 data-bind="template: {name: 'help.title'}"></div>
+                                 data-bind="translate:'help.title'"></div>
                             <div class="ui-separator"></div>
                             <div class="ui-spacing"></div>
 
                             <div class="ui-content-subtitle"
-                                 data-bind="template: {name: 'help.known_issues.subtitle'}"></div>
+                                 data-bind="translate:'help.known_issues.subtitle'"></div>
                             <div>
                                 <span>URL to URL rule action not always working as expected.</span>
                                 <span>If you want re-direct such thing like JavaScript, CSS (Style sheet), Image or etc.,</span>
@@ -214,23 +218,23 @@
                             </div>
 
                             <div class="ui-content-subtitle"
-                                 data-bind="template: {name: 'help.about.subtitle'}"></div>
+                                 data-bind="translate:'help.about.subtitle'"></div>
 
-                            <div data-bind="template: {name: 'help.about.text1'}">
+                            <div data-bind="translate:'help.about.text1'">
                             </div>
-                            <div data-bind="template: {name: 'help.about.text2'}">
+                            <div data-bind="translate:'help.about.text2'">
                             </div>
 
                             <div class="ui-spacing"></div>
 
-                            <div data-bind="template: {name: 'help.about.third_party'}"></div>
+                            <div data-bind="translate:'help.about.third_party'"></div>
 
                             <ul data-bind="template: { name: 'ui-third-party-lib-info', foreach: thirdPartyLibs }">
-
                             </ul>
+
                             <div class="ui-spacing"></div>
 
-                            <div data-bind="template: {name: 'help.about.us.text'}">
+                            <div data-bind="translate:'help.about.us.text'">
                             </div>
                         </div>
                     </div>

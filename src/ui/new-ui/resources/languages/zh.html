@@ -1,205 +1,234 @@
 <!DOCTYPE html>
 <html lang="zh">
-    <head>
-        <meta charset="UTF-8">
-        <title>ResourceOverridePlus 中文 UI</title>
+    <title>中文</title>
 
-        <!-- Tabs -->
-        <script type="text/html" id="tabs.home">
-            <span>主頁</span>
-        </script>
+    <!-- Tabs -->
+    <script type="text/html" id="tabs.home">
+        <span>主頁</span>
+    </script>
 
-        <script type="text/html" id="tabs.domains">
-            <span>規則集</span>
-        </script>
+    <script type="text/html" id="tabs.domains">
+        <span>規則集</span>
+    </script>
 
-        <script type="text/html" id="tabs.settings">
-            <span>設定</span>
-        </script>
+    <script type="text/html" id="tabs.settings">
+        <span>設定</span>
+    </script>
 
-        <script type="text/html" id="tabs.help">
-            <span>幫助</span>
-        </script>
+    <script type="text/html" id="tabs.help">
+        <span>幫助</span>
+    </script>
 
-        <!-- UI Loading placeholder -->
-        <script type="text/html" id="start.loading">
-            <span>頁面載入中...</span>
-        </script>
+    <!-- UI Loading placeholder -->
+    <script type="text/html" id="start.loading">
+        <span>頁面載入中...</span>
+    </script>
 
-        <!-- On start fail message -->
-        <script type="text/html" id="start.fail.message">
-            <h2>噢幹 :(</h2>
-            <div>發生錯誤了 !!</div>
-            <div>外掛程式資訊模組無法載入</div>
+    <!-- On start fail message -->
+    <script type="text/html" id="start.fail.message">
+        <h2>噢幹 :(</h2>
+        <div>發生錯誤了 !!</div>
+        <div>外掛程式資訊模組無法載入</div>
 
-            <div>如果你/妳無法解決、或是有一些改進的建議，歡迎提交 issues!</div>
-            <div>謝謝!</div>
+        <div>如果你/妳無法解決、或是有一些改進的建議，歡迎提交 issues!</div>
+        <div>謝謝!</div>
+        <span>
             <a href="https://github.com/appleneko2001/ResourceOverridePlus/issues/new">
-                <p>提交 issues</p>
-            </a>
+            <p>提交 issues</p>
+        </a>
+        </span>
 
-            <p>請不要忘記告訴我你/妳正在用的是哪一款瀏覽器、瀏覽器版本、以及此外掛程式的版本 !!!</p>
+        <p>請不要忘記告訴我你/妳正在用的是哪一款瀏覽器、瀏覽器版本、以及此外掛程式的版本 !!!</p>
 
-            <h4>錯誤資訊:</h4>
-            <div data-bind="text: message"></div>
+        <h4>錯誤資訊</h4>
+        <div>{{message}}</div>
 
-            <h4>Stacktrace</h4>
-            <div data-bind="text: stack"></div>
-        </script>
+        <h4>Stacktrace</h4>
+        <div>{{stack}}</div>
+    </script>
 
-        <!-- Home section -->
-        <!-- Disclaimer title -->
-        <script type="text/html" id="home.disclaimer.title">
-            <span>聲明</span>
-        </script>
+    <!-- Home section -->
+    <!-- Disclaimer title -->
+    <script type="text/html" id="home.disclaimer.title">
+        <span>聲明</span>
+    </script>
 
-        <!-- Disclaimer text -->
-        <script type="text/html" id="home.disclaimer.text">
-            <span>Please <b>use it at your own risk and responsibility</b> to what did you do with our extension!</span>
-            <span>It used for correct frontend scripts, styles and some personal customizations,</span>
-            <span><b>not for abuse and "hacking" or making "fake" things on their sites !</b></span>
-            <div><b>If you can't take responsibility</b>, then <b>do not use this extension !</b></div>
-        </script>
+    <!-- Disclaimer text -->
+    <script type="text/html" id="home.disclaimer.text">
+        <span>Please <b>use it at your own risk and responsibility</b> to what did you do with our extension!</span>
+        <span>It used for correct frontend scripts, styles and some personal customizations,</span>
+        <span><b>not for abuse and "hacking" or making "fake" things on their sites !</b></span>
+        <div><b>If you can't take responsibility</b>, then <b>do not use this extension !</b></div>
+    </script>
 
-        <!-- Home page title -->
-        <script type="text/html" id="home.title">
-            <span>歡迎使用 ResourceOverridePlus!</span>
-        </script>
+    <!-- Home page title -->
+    <script type="text/html" id="home.title">
+        <span>歡迎使用 ResourceOverridePlus!</span>
+    </script>
 
-        <!-- Home page subtitle -->
-        <script type="text/html" id="home.subtitle">
-            <span>這是一個 Resource Override 瀏覽器外掛程式的增強版本</span>
-        </script>
+    <!-- Home page subtitle -->
+    <script type="text/html" id="home.subtitle">
+        <span>這是一個 Resource Override 瀏覽器外掛程式的增強版本</span>
+    </script>
 
-        <!-- Home page text under subtitle -->
-        <script type="text/html" id="home.about">
-            <span>Resource Override 是一款允許你/妳控制任意網站頁面元素的瀏覽器外掛程式。可對頁面進行重新導向內容引用、改變、或是注入新元素。</span>
-            <span>基本上可以用 Resource Override 外掛程式去覆蓋頁面腳本、樣式表、以及圖像，只需要一些簡單的規則設定。</span>
-        </script>
+    <!-- Home page text under subtitle -->
+    <script type="text/html" id="home.about">
+        <span>Resource Override 是一款允許你/妳控制任意網站頁面元素的瀏覽器外掛程式。可對頁面進行重新導向內容引用、改變、或是注入新元素。</span>
+        <span>基本上可以用 Resource Override 外掛程式去覆蓋頁面腳本、樣式表、以及圖像，只需要一些簡單的規則設定。</span>
+    </script>
 
-        <!-- Home page getting started subtitle -->
-        <script type="text/html" id="home.usage.subtitle">
-            <span>初次使用</span>
-        </script>
+    <!-- Home page getting started subtitle -->
+    <script type="text/html" id="home.usage.subtitle">
+        <span>初次使用</span>
+    </script>
 
-        <!-- Home page getting started text -->
-        <script type="text/html" id="home.usage.text">
-            <span>使用該程式需要設定至少一個規則集，並確保它們是開啟狀態。</span>
-            <span>想要設定規則集，請先點擊左側的“規則集”。</span>
-            <span>然後點擊下面的“設定一個規則集“，之後再設定至少一個規則來讓它運作。</span>
-        </script>
+    <!-- Home page getting started text -->
+    <script type="text/html" id="home.usage.text">
+        <span>使用該程式需要設定至少一個規則集，並確保它們是開啟狀態。</span>
+        <span>想要設定規則集，請先點擊左側的“規則集”。</span>
+        <span>然後點擊下面的“設定一個規則集“，之後再設定至少一個規則來讓它運作。</span>
+    </script>
 
-        <!-- Domains section -->
-        <!-- TODO: complete this shit -->
-        <!-- Domains and rules title -->
-        <script type="text/html" id="domains.title">
-            <span>規則集</span>
-        </script>
+    <!-- Domains section -->
+    <!-- TODO: complete this shit -->
+    <!-- Domains and rules title -->
+    <script type="text/html" id="domains.title">
+        <span>規則集</span>
+    </script>
 
-        <!-- Add domain button text -->
-        <script type="text/html" id="domains.actions.add.text">
-            <span>設定一個規則集</span>
-        </script>
+    <!-- Add domain button text -->
+    <script type="text/html" id="domains.actions.add.text">
+        <span>設定一個規則集</span>
+    </script>
 
-        <!-- Settings section -->
-        <!-- Settings title -->
-        <script type="text/html" id="settings.title">
-            <span>設定</span>
-        </script>
 
-        <!-- Appearance subtitle -->
-        <script type="text/html" id="settings.appearance.subtitle">
-            <span>基本外觀</span>
-        </script>
+    <script type="text/html" id="domains.items.rule_kind">
+        <span>規則類別</span>
+    </script>
 
-        <!-- Appearance -> Theme -->
-        <script type="text/html" id="settings.appearance.theme">
-            <span>主題</span>
-        </script>
+    <!-- Settings section -->
+    <!-- Settings title -->
+    <script type="text/html" id="settings.title">
+        <span>設定</span>
+    </script>
 
-        <!-- Appearance -> Prefer narrow sidebar -->
-        <script type="text/html" id="settings.appearance.prefer_narrow_sidebar">
-            <span>最小化側邊欄優先</span>
-        </script>
+    <!-- Appearance subtitle -->
+    <script type="text/html" id="settings.appearance.subtitle">
+        <span>基本外觀</span>
+    </script>
 
-        <!-- Import and export subtitle -->
-        <script type="text/html" id="settings.import_export.subtitle">
-            <span>匯入與匯出設定</span>
-        </script>
+    <!-- Appearance -> Theme -->
+    <script type="text/html" id="settings.appearance.theme">
+        <span>主題</span>
+    </script>
 
-        <!-- Import v1 button text -->
-        <script type="text/html" id="settings.import_export.import_v1.text">
-            <span>從舊版匯入</span>
-        </script>
+    <!-- Appearance -> Prefer narrow sidebar -->
+    <script type="text/html" id="settings.appearance.prefer_narrow_sidebar">
+        <span>最小化側邊欄優先</span>
+    </script>
 
-        <!-- Import button text -->
-        <script type="text/html" id="settings.import_export.import.text">
-            <span>匯入</span>
-        </script>
+    <!-- Appearance -> Language -->
+    <script type="text/html" id="settings.appearance.language">
+        <span>語言</span>
+    </script>
 
-        <!-- Export button text -->
-        <script type="text/html" id="settings.import_export.export.text">
-            <span>匯出</span>
-        </script>
+    <!-- Import and export subtitle -->
+    <script type="text/html" id="settings.import_export.subtitle">
+        <span>匯入與匯出設定</span>
+    </script>
 
-        <!-- Help section -->
-        <!-- Help and about title -->
-        <script type="text/html" id="help.title">
-            <span>幫助 x 關於</span>
-        </script>
+    <!-- Import v1 button text -->
+    <script type="text/html" id="settings.import_export.import_v1.text">
+        <span>從舊版匯入</span>
+    </script>
 
-        <!-- Known issues subtitle -->
-        <script type="text/html" id="help.known_issues.subtitle">
-            <span>已知問題</span>
-        </script>
+    <!-- Import button text -->
+    <script type="text/html" id="settings.import_export.import.text">
+        <span>匯入</span>
+    </script>
 
-        <!-- About subtitle -->
-        <script type="text/html" id="help.about.subtitle">
-            <span>關於</span>
-        </script>
+    <!-- Export button text -->
+    <script type="text/html" id="settings.import_export.export.text">
+        <span>匯出</span>
+    </script>
 
-        <!-- About text 1 -->
-        <script type="text/html" id="help.about.text1">
-            <span>ResourceOverridePlus 是一個免費，</span>
-            <a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">自由開放軟體</a>
-            <span>。</span>
-        </script>
+    <!-- Help section -->
+    <!-- Help and about title -->
+    <script type="text/html" id="help.title">
+        <span>幫助 x 關於</span>
+    </script>
 
-        <!-- About text 2 -->
-        <script type="text/html" id="help.about.text2">
-            <span>這代表你/妳可以無憂無慮的使用、學習該軟體是如何運作的。</span>
-            <span>同時也可以更改、貢獻程式碼來讓這個軟體變得更強大、穩定 ! </span>
-            <div>歡迎查看我們的GitHub程式碼倉庫 !</div>
-            <a class="ui-link-block" href="https://github.com/appleneko2001/ResourceOverridePlus">ResourceOverridePlus Repository</a>
-            <a class="ui-link-block" href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride Repository</a>
-        </script>
+    <!-- Known issues subtitle -->
+    <script type="text/html" id="help.known_issues.subtitle">
+        <span>已知問題</span>
+    </script>
 
-        <!-- About -> Third party libraries -->
-        <script type="text/html" id="help.about.third_party">
-            <span>我們使用第三方程式庫：</span>
-        </script>
+    <!-- About subtitle -->
+    <script type="text/html" id="help.about.subtitle">
+        <span>關於</span>
+    </script>
 
-        <!-- TODO: same as domains section -->
+    <!-- About text 1 -->
+    <script type="text/html" id="help.about.text1">
+        <span>ResourceOverridePlus 是一個免費，</span>
+        <a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">自由開放軟體</a>
+        <span>。</span>
+    </script>
 
-        <!-- About -> Final section -->
-        <script type="text/html" id="help.about.us.text">
-            <div>用戶界面設計受到 AdBlockPlus 的啟發。</div>
-            <span>ResourceOverridePlus is my personal rework project, based on</span>
-            <a href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride by Kyle Paulsen</a>
-            <span>project and do some enhancements on features,</span>
-            <span>also the UI will be refreshed to make it looks more modern and understandable.</span>
-        </script>
+    <!-- About text 2 -->
+    <script type="text/html" id="help.about.text2">
+        <span>這代表你/妳可以無憂無慮的使用、學習該軟體是如何運作的。</span>
+        <span>同時也可以更改、貢獻程式碼來讓這個軟體變得更強大、穩定 ! </span>
+        <div>歡迎查看我們的GitHub程式碼倉庫 !</div>
+        <a class="ui-link-block" href="https://github.com/appleneko2001/ResourceOverridePlus">ResourceOverridePlus Repository</a>
+        <a class="ui-link-block" href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride Repository</a>
+    </script>
 
-        <script type="text/html" id="delete.confirm">
-            <span>確認要刪除嗎？沒有回頭路了喔？</span>
-        </script>
+    <!-- About -> Third party libraries -->
+    <script type="text/html" id="help.about.third_party">
+        <span>我們使用第三方程式庫：</span>
+    </script>
 
-        <script type="text/html" id="yes">
-            <span>是</span>
-        </script>
+    <!-- TODO: same as domains section -->
 
-        <script type="text/html" id="no">
-            <span>不</span>
-        </script>
-    </head>
+    <!-- About -> Final section -->
+    <script type="text/html" id="help.about.us.text">
+        <div>用戶界面設計受到 AdBlockPlus 的啟發。</div>
+        <span>ResourceOverridePlus is my personal rework project, based on</span>
+        <a href="https://github.com/kylepaulsen/ResourceOverride">ResourceOverride by Kyle Paulsen</a>
+        <span>project and do some enhancements on features,</span>
+        <span>also the UI will be refreshed to make it looks more modern and understandable.</span>
+    </script>
+
+    <script type="text/html" id="delete.confirm">
+        <span>確認要刪除嗎？沒有回頭路了喔？</span>
+    </script>
+
+    <script type="text/html" id="yes">
+        <span>是</span>
+    </script>
+
+    <script type="text/html" id="no">
+        <span>不</span>
+    </script>
+
+    <script type="text/html" id="unsaved">
+        <span>有未儲存的變動</span>
+    </script>
+
+    <script type="text/html" id="options">
+        <span>選項</span>
+    </script>
+
+    <script type="text/html" id="name">
+        <span>名字</span>
+    </script>
+
+    <script type="text/html" id="editor">
+        <span>編輯器</span>
+    </script>
+
+    <script type="text/html" id="version">
+        <span>版本: {{version}}</span>
+    </script>
 </html>
